@@ -18,7 +18,7 @@ namespace Lab1.Models
         }
         public void Create(Student student)
         {
-            student.Id = _students.Max(s => s.Id) + 1;
+            student.Id = _students.Count == 0 ? 0 : _students.Max(s => s.Id) + 1;
             _students.Add(student);
             SaveStudents();
         }
