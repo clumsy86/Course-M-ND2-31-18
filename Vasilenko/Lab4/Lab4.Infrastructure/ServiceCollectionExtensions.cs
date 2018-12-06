@@ -1,4 +1,7 @@
-﻿using Lab4.Data.Repositories;
+﻿using Lab4.Data.Contracts.Repositories;
+using Lab4.Data.Repositories;
+using Lab4.Domain.Contracts;
+using Lab4.Domain.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +21,6 @@ namespace Lab4.Infrastructure
 
         public static IServiceCollection AddIdentity(this IServiceCollection serviceCollection)
         {
-
                 serviceCollection.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
                     options.Password.RequiredLength = 6;
@@ -29,7 +31,9 @@ namespace Lab4.Infrastructure
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            serviceCollection.AddTransient<IPostService, PostService>();
+            serviceCollection.AddTransient<IUserService, UserService>();
+            serviceCollection.AddTransient<IContextFactory, ContextFactory>();
             return serviceCollection;
         }
     }
