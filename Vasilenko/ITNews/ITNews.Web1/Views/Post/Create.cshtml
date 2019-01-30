@@ -1,0 +1,60 @@
+﻿@using Syncfusion.EJ2
+@model ITNews.Web1.Models.PostViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+
+<hr />
+
+<div class="row">
+
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div>
+                    @Html.DisplayNameFor(x => x.Category)
+                </div>
+                @Html.DropDownListFor(x => x.Category.Id, ViewBag.Categories as SelectList)
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ShortDiscription" class="control-label"></label>
+                <input asp-for="ShortDiscription" class="form-control" />
+                <span asp-validation-for="ShortDiscription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                @Html.EJS().RichTextEditor("Content").Value((string)ViewBag.value).Height("720px").ToolbarSettings(e => { e.Type(Syncfusion.EJ2.RichTextEditor.ToolbarType.Expand); }).Render()
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

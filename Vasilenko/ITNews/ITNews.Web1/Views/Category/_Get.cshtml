@@ -1,0 +1,11 @@
+﻿@model IEnumerable<ITNews.Web1.Models.CategoryViewModel>
+
+
+
+
+
+    @Html.DropDownList("Categories", Html.GetEnumSelectList(typeof(CategoryViewModel)))
+    
+    <div>
+        <input type="submit" value="Choose" />
+    </div>
