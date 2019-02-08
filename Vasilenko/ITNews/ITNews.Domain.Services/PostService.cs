@@ -50,6 +50,13 @@ namespace ITNews.Domain.Services
             return postDomainModel;
         }
 
+        public PostDomainModel FindPost(int postId)
+        {
+            var post =postRepository.FindPostByPostId(postId);
+            var postDomainModel = mapper.Map<PostDomainModel>(post);
+            return postDomainModel;
+        }
+
         public void UpdatePost(PostDomainModel post)
         {
             var updatePost = mapper.Map<Post>(post);

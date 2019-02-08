@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ITNews.Web1.Models.PostViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+   ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
@@ -12,26 +12,18 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+            @*<th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Published)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
+            @*<th>
+            @Html.DisplayNameFor(model => model.Content)
+        </th>*@
+
             <th>
                 @Html.DisplayNameFor(model => model.ShortDiscription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
             </th>
 
             <th>
@@ -39,38 +31,37 @@
             </th>
 
             <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+
+            <th>
                 @Html.DisplayNameFor(model => model.Updated)
             </th>
 
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Published)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Published)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.Content)
+        </td>*@
+
             <td>
                 @Html.DisplayFor(modelItem => item.ShortDiscription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
             </td>
 
             <td>
@@ -78,9 +69,24 @@
             </td>
 
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Updated)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Published)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { postId = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { postId = item.Id })
             </td>
         </tr>
 }

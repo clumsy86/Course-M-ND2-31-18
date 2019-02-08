@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace ITNews.Data.Contracts.Repositories
 {
-    public interface ITagRepository:IDisposable
+    public interface ITagRepository : IDisposable
     {
-        IEnumerable<Tag> GetTags(string keyword);
+        IEnumerable<Tag> GetTags();
 
-        void DeleteTag(int tagId, int postId);
+        void DeleteTags (int postId);
 
         void CreateTags(IEnumerable<Tag> tags, int postId);
 

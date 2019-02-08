@@ -8,6 +8,8 @@ using ITNews.Infrastructure;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ITNews.Web1.Models;
 using AutoMapper;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace ITNews.Web1
 {
@@ -32,8 +34,11 @@ namespace ITNews.Web1
 
             services.AddDbContext(Configuration);
 
+            //services.AddMapper(Configuration);
+
             var mappingConfig = new MapperConfiguration(mc =>
             {
+                mc.AddProfile(new DomainMapper());
                 mc.AddProfile(new WebMapper());
             });
 
@@ -59,7 +64,7 @@ namespace ITNews.Web1
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +83,11 @@ namespace ITNews.Web1
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Images")),
+                RequestPath = "/Images"
+            });
             app.UseCookiePolicy();
 
             app.UseAuthentication();

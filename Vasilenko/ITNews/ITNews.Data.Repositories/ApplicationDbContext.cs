@@ -20,6 +20,7 @@ namespace ITNews.Data.Repositories
         public DbSet<PostRating> PostsRating { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<PostTag> PostsTags { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

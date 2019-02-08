@@ -5,6 +5,10 @@
         public int Id { get; set; }
 
         public int Mark { get; set; }
+
+        public int PostId { get; set;}
+
+        public string UserId { get; set; }
         
         public PostDomainModel Post { get; set; }
 

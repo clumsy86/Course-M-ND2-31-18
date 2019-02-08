@@ -22,6 +22,10 @@ namespace ITNews.Domain.Contracts.Entities
 
         public UserDomainModel User { get; set; }
 
-        public CategoryDomainModel Category { get; set; }       
+        public CategoryDomainModel Category { get; set; }    
+        
+        public int CategoryId { get; set; }
+
+        public string UserId { get; set; }
     }
 }

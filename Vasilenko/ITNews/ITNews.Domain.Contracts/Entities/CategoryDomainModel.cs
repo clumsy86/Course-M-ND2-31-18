@@ -7,5 +7,7 @@
         public string Name { get; set; }
 
         public UserDomainModel User { get; set; }
+
+        public string UserId { get; set; }
     }
 }

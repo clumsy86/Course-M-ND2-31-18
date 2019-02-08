@@ -18,16 +18,36 @@ namespace ITNews.Data.Repositories.Repositories
         public void CreateTags(IEnumerable<Tag> tags, int postId)
         {
             var post = postRepository.FindPostByPostId(postId);
-            post.
-            foreach (var item in tags)
+            if (post != null)
             {
-                context.Tags.Add(item);
+                foreach (var item in tags)
+                {
+                    var tag = new Tag { Content = item.Content, Id = item.Id };
+                    var tagPost = new PostTag
+                    {
+                        TagId = tag.Id,
+                        PostId = post.Id
+                    };
+                }
             }
         }
 
-        public void DeleteTag(int tagId, int postId)
+
+        public void DeleteTags(int postId)
         {
-            throw new NotImplementedException();
+            var post = postRepository.FindPostByPostId(postId);
+         
+            if (post != null)
+            {
+                var postTags = post.PostTags.Where(x => x.PostId == postId).ToList();
+                if (postTags != null)
+                {
+                    foreach (var item in postTags)
+                    {
+                        context.PostsTags.Remove(item);
+                    }
+                }
+            }
         }
 
         public void Dispose()
@@ -35,9 +55,9 @@ namespace ITNews.Data.Repositories.Repositories
             context.Dispose();
         }
 
-        public IEnumerable<Tag> GetTags(string keyword)
+        public IEnumerable<Tag> GetTags()
         {
-            return context.Tags.Where(x => x.Content.Contains(keyword)).ToList();
+            return context.Tags.ToList();
         }
 
         public void Save()

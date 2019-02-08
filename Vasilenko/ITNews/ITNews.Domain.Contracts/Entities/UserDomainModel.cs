@@ -8,7 +8,7 @@
 
         public string Email { get; set; }
 
-        public bool EmailComfirmed { get; set; }
+        public bool EmailConfirmed { get; set; }
 
         public int ProfileId { get; set; }
 

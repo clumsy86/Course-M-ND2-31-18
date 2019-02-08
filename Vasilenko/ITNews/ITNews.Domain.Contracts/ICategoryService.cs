@@ -13,5 +13,4 @@ namespace ITNews.Domain.Contracts
 
         List<CategoryDomainModel> GetCategories();
     }
-
 }

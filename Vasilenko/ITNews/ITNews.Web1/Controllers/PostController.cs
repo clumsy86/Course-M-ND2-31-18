@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using AutoMapper;
 using ITNews.Domain.Contracts;
 using ITNews.Domain.Contracts.Entities;
 using ITNews.Web1.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,13 +17,17 @@ namespace ITNews.Web1.Controllers
     {
         private readonly IPostService postService;
         private readonly ICategoryService categoryService;
+        private readonly ITagService tagService;
         private readonly IMapper mapper;
+        private readonly IHostingEnvironment hostingEnvironment;
 
-        public PostController(IPostService postService, IMapper mapper, ICategoryService categoryService)
+        public PostController(IPostService postService, IMapper mapper, ICategoryService categoryService, ITagService tagService, IHostingEnvironment hostingEnvironment)
         {
             this.postService = postService;
             this.mapper = mapper;
             this.categoryService = categoryService;
+            this.tagService = tagService;
+            this.hostingEnvironment = hostingEnvironment;
         }
         // GET: Post
         public ActionResult Index()
@@ -28,12 +35,6 @@ namespace ITNews.Web1.Controllers
             var posts = postService.GetPosts();
             var postsViewModel = mapper.Map<List<PostViewModel>>(posts);
             return View(postsViewModel);
-        }
-
-        // GET: Post/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
         }
 
         // GET: Post/Create
@@ -46,6 +47,28 @@ namespace ITNews.Web1.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult SaveFile()
+        {
+            if (HttpContext.Request.Form.Files.Count > 0)
+            {
+                var httpPostedFile = HttpContext.Request.Form.Files["UploadFiles"];
+                if (httpPostedFile != null)
+                {
+                    var destinationPath = Path.Combine(hostingEnvironment.ContentRootPath, "Images", httpPostedFile.FileName);
+                    using (var stream = new FileStream(destinationPath, FileMode.Create))
+                    {
+                        httpPostedFile.CopyTo(stream);
+                    }
+                }
+                return Content("");
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         // POST: Post/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -53,71 +76,108 @@ namespace ITNews.Web1.Controllers
         {
             //try
             //{
-                var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-                if (ModelState.IsValid)
-                {
-                    var postDomainModel = mapper.Map<PostDomainModel>(post);
-                    postService.CreatePost(postDomainModel, id);
-                    return RedirectToAction(nameof(Index));
-                }
+            var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-                else
-                {
-                    return View();
-                }
+            if (ModelState.IsValid)
+            {
+                var postDomainModel = mapper.Map<PostDomainModel>(post);
+                postService.CreatePost(postDomainModel, id);
+                return RedirectToAction(nameof(Index));
+
+            }
+
+            else
+            {
+                return View();
+            }
+
+        }
+    
+        
+
+                
             //}
             //catch
             //{
             //    return RedirectToPage("https://localhost:44318/Identity/Account/Login");
             //}
-               
+
+        
+        public JsonResult Autocomplete(string term)
+        {
+
+            var tags = tagService.GetTags().ToList();
+
+            var taglist = tags.Where(n => n.Content.Contains (term)).Select(x=> new TagViewModel
+            {
+                Id = x.Id,
+                Content = x.Content
+            }).ToList();
+
+            return  new JsonResult (taglist);
         }
 
+       
+
         // GET: Post/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int postId)
         {
-            return View();
+            if (postId != 0)
+            {
+                var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                if (id != null)
+                {
+                    var post = postService.FindPost(postId);
+                    var postViewModel = mapper.Map<PostViewModel>(post);
+                    var categories = categoryService.GetCategories();
+                    var categoriesViewModel = mapper.Map<List<CategoryViewModel>>(categories);
+                    ViewBag.Categories = new SelectList(categoriesViewModel, "Id", "Name");
+                    return View(postViewModel);
+                }
+                else
+                {
+                    return RedirectToPage("https://localhost:44318/Identity/Account/Login");
+                }
+            }
+            else
+            {
+                return View(); //EXCEPTION!!!! POST NOT FOUNDED 404
+            }
         }
 
         // POST: Post/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, PostViewModel post)
         {
-            try
-            {
-                // TODO: Add update logic here
+            //try
+            //{
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            if (ModelState.IsValid)
+            {
+                var postDomainModel = mapper.Map<PostDomainModel>(post);
+                postService.UpdatePost(postDomainModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                return View(); //EXCEPTION!!!! POST NOT FOUNDED 404
             }
+
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
         }
 
         // GET: Post/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int postId)
         {
-            return View();
-        }
-
-        // POST: Post/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            postService.DeletePost(postId);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

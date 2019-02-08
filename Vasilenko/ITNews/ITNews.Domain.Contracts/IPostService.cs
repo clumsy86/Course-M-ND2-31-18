@@ -14,5 +14,7 @@ namespace ITNews.Domain.Contracts
         void DeletePost(int postId);
 
         void CreatePost(PostDomainModel post, string userId);
+
+        PostDomainModel FindPost(int postId);
     }
 }

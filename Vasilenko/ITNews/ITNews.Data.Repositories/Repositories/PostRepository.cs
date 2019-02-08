@@ -33,7 +33,7 @@ namespace ITNews.Data.Repositories.Repositories
 
         public IEnumerable<Post> GetPostsOrderByRating()
         {
-            return context.Posts.ToList().OrderByDescending(x => x.Rating);
+            return context.Posts.Include(x=>x.Category).ToList().OrderByDescending(x => x.Rating);
         }
 
         public Post FindPostByPostId (int postId)
@@ -43,8 +43,8 @@ namespace ITNews.Data.Repositories.Repositories
 
         public void CreatePost(Post post, string userId)
         {
+            context.Posts.Attach(post);
             post.UserId = userId;
-            context.Posts.Add(post);
         }
 
         public void Save()
