@@ -9,45 +9,57 @@ namespace ITNews.Data.Repositories.Repositories
     public class TagRepository : ITagRepository, IDisposable
     {
         private ApplicationDbContext context;
-        private IPostRepository postRepository;
 
         public TagRepository(ApplicationDbContext context)
         {
             this.context = context;
         }
-        public void CreateTags(IEnumerable<Tag> tags, int postId)
+        public void CreateTag (Tag tag)
         {
-            var post = postRepository.FindPostByPostId(postId);
-            if (post != null)
+            context.Tags.Add(tag);
+        }
+
+        public void DeleteTag(int tagId)
+        {
+            var tag = context.Tags.Where(x => x.Id == tagId).FirstOrDefault();
+            context.Tags.Remove(tag);
+        }
+        //public bool IsExistTag (int tagId)
+        //{
+        //    var existTag = context.Tags.Where(x => x.Id == tagId);
+        //    if (existTag == null)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }
+        //}
+
+        public int FindTag(string tagContent)
+        {
+            var existTag = context.Tags.Where(x=> x.Content == tagContent).FirstOrDefault();
+
+            if (existTag == null)
             {
-                foreach (var item in tags)
-                {
-                    var tag = new Tag { Content = item.Content, Id = item.Id };
-                    var tagPost = new PostTag
-                    {
-                        TagId = tag.Id,
-                        PostId = post.Id
-                    };
-                }
+                return 0;
+            }
+            else
+            {
+                return existTag.Id;
             }
         }
 
-
-        public void DeleteTags(int postId)
+        public void AddToPost(int postId, int tagId)
         {
-            var post = postRepository.FindPostByPostId(postId);
-         
-            if (post != null)
-            {
-                var postTags = post.PostTags.Where(x => x.PostId == postId).ToList();
-                if (postTags != null)
-                {
-                    foreach (var item in postTags)
-                    {
-                        context.PostsTags.Remove(item);
-                    }
-                }
-            }
+            context.PostsTags.Add (new PostTag { PostId = postId, TagId = tagId });
+        }
+
+        public int GetNewTagId(Tag tag)
+        {
+            context.Entry(tag).GetDatabaseValues();
+            return tag.Id;
         }
 
         public void Dispose()

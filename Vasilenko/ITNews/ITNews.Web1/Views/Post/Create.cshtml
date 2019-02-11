@@ -47,11 +47,13 @@
                 </label>
             </div>
         </div>
-
+        
         <div>
+
             <div class="ui-widget">
-                <label for="searchTag">Tag: </label>
-                <input id="searchTag" size="50">
+                <label asp-for="Tag.Content" class="control-label"></label>
+                <input asp-for="Tag.Content" id="tags" @*class="form-control"*@ />
+                @*<span asp-validation-for="Tag.Content" class="text-danger"></span>*@
             </div>
         </div>
         <br/>

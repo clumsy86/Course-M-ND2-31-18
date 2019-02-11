@@ -47,6 +47,12 @@ namespace ITNews.Data.Repositories.Repositories
             post.UserId = userId;
         }
 
+        public int GetPostId(Post post)
+        {
+            context.Entry(post).GetDatabaseValues();
+            return post.Id;
+        }
+
         public void Save()
         {
             context.SaveChanges();

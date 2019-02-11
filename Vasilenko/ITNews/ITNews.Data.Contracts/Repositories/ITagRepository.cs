@@ -8,10 +8,18 @@ namespace ITNews.Data.Contracts.Repositories
     {
         IEnumerable<Tag> GetTags();
 
-        void DeleteTags (int postId);
-
-        void CreateTags(IEnumerable<Tag> tags, int postId);
+        void CreateTag(Tag tag);
 
         void Save();
+
+        void AddToPost(int postId, int tagId);
+
+        // bool IsExistTag(int tagId);
+
+        int FindTag(string tagContent);
+
+        int GetNewTagId(Tag tag);
+
+        void DeleteTag(int tagId);
     }
 }

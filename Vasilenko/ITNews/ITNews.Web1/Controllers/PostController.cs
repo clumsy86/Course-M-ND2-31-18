@@ -21,7 +21,8 @@ namespace ITNews.Web1.Controllers
         private readonly IMapper mapper;
         private readonly IHostingEnvironment hostingEnvironment;
 
-        public PostController(IPostService postService, IMapper mapper, ICategoryService categoryService, ITagService tagService, IHostingEnvironment hostingEnvironment)
+        public PostController(IPostService postService, IMapper mapper, ICategoryService categoryService, 
+            ITagService tagService, IHostingEnvironment hostingEnvironment)
         {
             this.postService = postService;
             this.mapper = mapper;
@@ -82,43 +83,43 @@ namespace ITNews.Web1.Controllers
             if (ModelState.IsValid)
             {
                 var postDomainModel = mapper.Map<PostDomainModel>(post);
-                postService.CreatePost(postDomainModel, id);
-                return RedirectToAction(nameof(Index));
+                var newPostId = postService.CreatePost(postDomainModel, id);
 
+                if (post.Tag.Content != null)
+                {
+                    tagService.AddTags(post.Tag.Content, newPostId);
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
             else
             {
                 return View();
             }
-
         }
-    
         
+        //catch
+        //{
+        //    return RedirectToPage("https://localhost:44318/Identity/Account/Login");
+        //}
 
-                
-            //}
-            //catch
-            //{
-            //    return RedirectToPage("https://localhost:44318/Identity/Account/Login");
-            //}
 
-        
         public JsonResult Autocomplete(string term)
         {
 
             var tags = tagService.GetTags().ToList();
 
-            var taglist = tags.Where(n => n.Content.Contains (term)).Select(x=> new TagViewModel
+            var taglist = tags.Where(n => n.Content.Contains(term)).Select(x => new TagViewModel
             {
                 Id = x.Id,
                 Content = x.Content
             }).ToList();
 
-            return  new JsonResult (taglist);
+            return new JsonResult(taglist);
         }
 
-       
+
 
         // GET: Post/Edit/5
         public ActionResult Edit(int postId)

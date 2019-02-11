@@ -22,19 +22,6 @@ namespace ITNews.Infrastructure
             return serviceCollection;
         }
 
-        //public static IServiceCollection AddMapper(this IServiceCollection serviceCollection, IConfiguration configuration)
-        //{
-        //    var mappingConfig = new MapperConfiguration(mc =>
-        //    {
-        //        mc.AddProfile(new DomainMapper());
-        //        mc.AddProfile(new WebMapper());
-        //    });
-
-        //    IMapper mapper = mappingConfig.CreateMapper();
-        //    serviceCollection.AddSingleton(mapper);
-        //    return serviceCollection;
-        //}
-
         public static IServiceCollection AddIdentity(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddIdentity<ApplicationUser, IdentityRole>()
@@ -49,6 +36,7 @@ namespace ITNews.Infrastructure
             serviceCollection.AddTransient<IUserRepository, UserRepository>();
             serviceCollection.AddTransient<ITagRepository, TagRepository>();
             serviceCollection.AddTransient<ITagService, TagService>();
+            serviceCollection.AddTransient<IPostTagRepository, PostTagRepository>();
             return serviceCollection;
         }       
 

@@ -5,6 +5,7 @@ using ITNews.Domain.Contracts;
 using ITNews.Domain.Contracts.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ITNews.Domain.Services
 {
@@ -12,28 +13,48 @@ namespace ITNews.Domain.Services
     {
         private IPostRepository postRepository;
         private ICategoryRepository categoryRepository;
+        private ITagRepository tagRepository;
+        private IPostTagRepository postTagRepository;
         private IMapper mapper;
 
-        public PostService(IPostRepository postRepository, IMapper mapper, ICategoryRepository categoryRepository)
+        public PostService(IPostRepository postRepository, IMapper mapper, ICategoryRepository categoryRepository, 
+            ITagRepository tagRepository, IPostTagRepository postTagRepository)
         {
             this.postRepository = postRepository;
             this.mapper = mapper;
             this.categoryRepository = categoryRepository;
+            this.tagRepository = tagRepository;
+            this.postTagRepository = postTagRepository;
         }
       
-        public void CreatePost(PostDomainModel postDomainModel, string userId)
+        public int CreatePost(PostDomainModel postDomainModel, string userId)
         {
             var post = mapper.Map<Post>(postDomainModel);
             postRepository.CreatePost(post, userId);
             post.Created = DateTime.Now;
             post.Updated = DateTime.Now;
             postRepository.Save();
+            var postId = postRepository.GetPostId(post);
+            return postId;
         }
 
         public void DeletePost(int postId)
         {
+            var tags = postTagRepository.GetPostTags(postId);
+
             postRepository.DeletePost(postId);
+
             postRepository.Save();
+          
+            foreach (var item in tags)
+
+                if (postTagRepository.FindNotUsedTag(item))
+                {
+                    tagRepository.DeleteTag(item);
+
+                    tagRepository.Save();
+                }
+            
         }
 
         public IEnumerable<PostDomainModel> GetPosts()
@@ -52,7 +73,7 @@ namespace ITNews.Domain.Services
 
         public PostDomainModel FindPost(int postId)
         {
-            var post =postRepository.FindPostByPostId(postId);
+            var post = postRepository.FindPostByPostId(postId);
             var postDomainModel = mapper.Map<PostDomainModel>(post);
             return postDomainModel;
         }

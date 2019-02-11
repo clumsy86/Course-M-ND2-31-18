@@ -19,5 +19,7 @@ namespace ITNews.Data.Contracts.Repositories
         Post FindPostByPostId(int postId);
 
         void Save();
+
+        int GetPostId(Post post);
     }
 }

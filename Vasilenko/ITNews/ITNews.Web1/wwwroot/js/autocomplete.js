@@ -6,7 +6,7 @@
         return split(term).pop();
     }
 
-    $("#searchTag")
+    $("#tags")
         // don't navigate away from the field on tab when selecting an item
         .on("keydown", function (event) {
             if (event.keyCode === $.ui.keyCode.TAB &&

@@ -7,8 +7,6 @@ namespace ITNews.Domain.Contracts
     {
         IEnumerable<TagDomainModel> GetTags();
 
-        void DeleteTags (int postId);
-
-        void CreateTags(IEnumerable<TagDomainModel> tags, int postId);
+        void AddTags(string tags, int postId);
     }
 }
