@@ -37,6 +37,7 @@ namespace ITNews.Infrastructure
             serviceCollection.AddTransient<ITagRepository, TagRepository>();
             serviceCollection.AddTransient<ITagService, TagService>();
             serviceCollection.AddTransient<IPostTagRepository, PostTagRepository>();
+            serviceCollection.AddTransient<IPostTagService, PostTagService>();
             return serviceCollection;
         }       
 

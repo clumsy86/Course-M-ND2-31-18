@@ -8,5 +8,7 @@ namespace ITNews.Domain.Contracts
         IEnumerable<TagDomainModel> GetTags();
 
         void AddTags(string tags, int postId);
+
+        string FindTagsByPostId(int postId);
     }
 }

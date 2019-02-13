@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITNews.Data.Contracts.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace ITNews.Data.Contracts.Repositories
@@ -10,5 +11,9 @@ namespace ITNews.Data.Contracts.Repositories
         void Save();
 
         List<int> GetPostTags(int postId);
+
+        bool IsExistPostTag(int postId, int tagId);
+
+        IEnumerable<PostTag> GetPostsTags();
     }
 }

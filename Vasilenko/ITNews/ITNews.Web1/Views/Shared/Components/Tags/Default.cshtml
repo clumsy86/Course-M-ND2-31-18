@@ -1,0 +1,10 @@
+﻿@model IEnumerable<ITNews.Web1.Models.CloudTags>
+
+@foreach(var item in Model)
+{
+    <div>
+        <span>@item.Content  @item.Count</span>
+    </div>
+}
+
+

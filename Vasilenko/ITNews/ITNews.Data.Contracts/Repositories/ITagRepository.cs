@@ -16,10 +16,12 @@ namespace ITNews.Data.Contracts.Repositories
 
         // bool IsExistTag(int tagId);
 
-        int FindTag(string tagContent);
+        int FindTagByContent(string tagContent);
 
         int GetNewTagId(Tag tag);
 
         void DeleteTag(int tagId);
+
+        Tag FindTagById(int tagId);
     }
 }

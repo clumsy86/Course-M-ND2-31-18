@@ -47,6 +47,25 @@ namespace ITNews.Data.Repositories.Repositories
             return tagsId;
         }
 
+        public bool IsExistPostTag(int postId, int tagId)
+        {
+            var existPostTag = context.PostsTags.Where(x => x.PostId == postId && x.TagId == tagId).FirstOrDefault();
+
+            if (existPostTag != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public IEnumerable<PostTag> GetPostsTags()
+        {
+            return context.PostsTags.ToList();
+        }
+
         public void Save()
         {
             context.SaveChanges();

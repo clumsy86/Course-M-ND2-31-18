@@ -21,6 +21,11 @@ namespace ITNews.Data.Repositories.Repositories
             context.Remove(postDeleted);
         }
 
+        public IEnumerable<Post> GetPublishedPosts()
+        {
+            return context.Posts.Include(x=>x.Category).Include(x=>x.User).Where(x => x.Published == true).OrderByDescending(x=>x.Created).ToList();
+        }
+
         public void Dispose()
         {
             context.Dispose();

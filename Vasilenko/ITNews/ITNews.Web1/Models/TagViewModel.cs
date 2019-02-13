@@ -8,5 +8,6 @@ namespace ITNews.Web1.Models
 
         [DisplayName("Tags")]
         public string Content { get; set; }
+
     }
 }

@@ -71,6 +71,13 @@ namespace ITNews.Domain.Services
             return postDomainModel;
         }
 
+        public IEnumerable<PostDomainModel> GetPublishedPosts()
+        {
+            var posts = postRepository.GetPublishedPosts();
+            var postsDomainModel = mapper.Map<List<PostDomainModel>>(posts);
+            return postsDomainModel;
+        }
+
         public PostDomainModel FindPost(int postId)
         {
             var post = postRepository.FindPostByPostId(postId);

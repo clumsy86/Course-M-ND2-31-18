@@ -37,7 +37,7 @@ namespace ITNews.Data.Repositories.Repositories
         //    }
         //}
 
-        public int FindTag(string tagContent)
+        public int FindTagByContent(string tagContent)
         {
             var existTag = context.Tags.Where(x=> x.Content == tagContent).FirstOrDefault();
 
@@ -75,6 +75,11 @@ namespace ITNews.Data.Repositories.Repositories
         public void Save()
         {
             context.SaveChanges();
+        }
+
+        public Tag FindTagById(int tagId)
+        {
+           return context.Tags.Where(x => x.Id == tagId).FirstOrDefault();
         }
     }
 }

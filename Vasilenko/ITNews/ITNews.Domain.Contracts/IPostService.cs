@@ -16,5 +16,7 @@ namespace ITNews.Domain.Contracts
         int CreatePost(PostDomainModel post, string userId);
 
         PostDomainModel FindPost(int postId);
+
+        IEnumerable<PostDomainModel> GetPublishedPosts();
     }
 }

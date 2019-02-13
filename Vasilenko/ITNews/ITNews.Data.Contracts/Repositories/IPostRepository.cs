@@ -21,5 +21,7 @@ namespace ITNews.Data.Contracts.Repositories
         void Save();
 
         int GetPostId(Post post);
+
+        IEnumerable<Post> GetPublishedPosts();
     }
 }

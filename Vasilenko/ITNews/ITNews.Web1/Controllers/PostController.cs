@@ -20,6 +20,7 @@ namespace ITNews.Web1.Controllers
         private readonly ITagService tagService;
         private readonly IMapper mapper;
         private readonly IHostingEnvironment hostingEnvironment;
+      
 
         public PostController(IPostService postService, IMapper mapper, ICategoryService categoryService, 
             ITagService tagService, IHostingEnvironment hostingEnvironment)
@@ -34,7 +35,9 @@ namespace ITNews.Web1.Controllers
         public ActionResult Index()
         {
             var posts = postService.GetPosts();
+
             var postsViewModel = mapper.Map<List<PostViewModel>>(posts);
+
             return View(postsViewModel);
         }
 
@@ -42,9 +45,13 @@ namespace ITNews.Web1.Controllers
         public ActionResult Create()
         {
             ViewBag.value = @"<p>Please, enter your post </p>";
+
             var categories = categoryService.GetCategories();
+
             var categoriesViewModel = mapper.Map<List<CategoryViewModel>>(categories);
+
             ViewBag.Categories = new SelectList(categoriesViewModel, "Id", "Name");
+
             return View();
         }
 
@@ -54,9 +61,11 @@ namespace ITNews.Web1.Controllers
             if (HttpContext.Request.Form.Files.Count > 0)
             {
                 var httpPostedFile = HttpContext.Request.Form.Files["UploadFiles"];
+
                 if (httpPostedFile != null)
                 {
                     var destinationPath = Path.Combine(hostingEnvironment.ContentRootPath, "Images", httpPostedFile.FileName);
+
                     using (var stream = new FileStream(destinationPath, FileMode.Create))
                     {
                         httpPostedFile.CopyTo(stream);
@@ -104,16 +113,37 @@ namespace ITNews.Web1.Controllers
         //    return RedirectToPage("https://localhost:44318/Identity/Account/Login");
         //}
 
+            public class AutocompleteResultViewModel
+        {
+            public int Id
+            {
+                get;
+                set;
+            }
+
+            public string Label
+            {
+                get;
+                set;
+            }
+
+            public string Value
+            {
+                get;
+                set;
+            }
+        }
 
         public JsonResult Autocomplete(string term)
         {
 
             var tags = tagService.GetTags().ToList();
 
-            var taglist = tags.Where(n => n.Content.Contains(term)).Select(x => new TagViewModel
+            var taglist = tags.Where(n => n.Content.Contains(term)).Select(x => new AutocompleteResultViewModel
             {
                 Id = x.Id,
-                Content = x.Content
+                Label = x.Content,
+                Value = x.Content
             }).ToList();
 
             return new JsonResult(taglist);
@@ -127,13 +157,26 @@ namespace ITNews.Web1.Controllers
             if (postId != 0)
             {
                 var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
                 if (id != null)
                 {
                     var post = postService.FindPost(postId);
+
                     var postViewModel = mapper.Map<PostViewModel>(post);
+
+                    var tagContent = tagService.FindTagsByPostId(postId);
+
+                    if (tagContent != null)
+                    {
+                        postViewModel.Tag = new TagViewModel { Content = tagContent};
+                    }
+
                     var categories = categoryService.GetCategories();
+
                     var categoriesViewModel = mapper.Map<List<CategoryViewModel>>(categories);
+
                     ViewBag.Categories = new SelectList(categoriesViewModel, "Id", "Name");
+
                     return View(postViewModel);
                 }
                 else
@@ -159,7 +202,14 @@ namespace ITNews.Web1.Controllers
             if (ModelState.IsValid)
             {
                 var postDomainModel = mapper.Map<PostDomainModel>(post);
+
                 postService.UpdatePost(postDomainModel);
+
+                if (post.Tag.Content != null)
+                {
+                    tagService.AddTags(post.Tag.Content, post.Id);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -178,6 +228,7 @@ namespace ITNews.Web1.Controllers
         public ActionResult Delete(int postId)
         {
             postService.DeletePost(postId);
+
             return RedirectToAction(nameof(Index));
         }
     }
