@@ -9,7 +9,7 @@ namespace ITNews.Domain.Contracts
 
         IEnumerable<PostDomainModel> GetPosts();
 
-        void UpdatePost(PostDomainModel post);
+        void UpdatePost(PostDomainModel post, string userId);
 
         void DeletePost(int postId);
 
@@ -18,5 +18,11 @@ namespace ITNews.Domain.Contracts
         PostDomainModel FindPost(int postId);
 
         IEnumerable<PostDomainModel> GetPublishedPosts();
+
+        IEnumerable<PostDomainModel> GetPostsById(int postId);
+
+        IEnumerable<PostDomainModel> GetPopularPosts();
+
+        IEnumerable<SearchDomainModel> Search(string search);
     }
 }

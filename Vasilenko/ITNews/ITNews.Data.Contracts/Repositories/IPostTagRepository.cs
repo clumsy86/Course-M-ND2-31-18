@@ -15,5 +15,7 @@ namespace ITNews.Data.Contracts.Repositories
         bool IsExistPostTag(int postId, int tagId);
 
         IEnumerable<PostTag> GetPostsTags();
+
+        IEnumerable<PostTag> PostsByTagId (int tagId);
     }
 }

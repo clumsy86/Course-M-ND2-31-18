@@ -33,17 +33,22 @@ namespace ITNews.Data.Repositories.Repositories
 
         public IEnumerable<Post> GetPostsByUserId(string userId)
         {
-            return context.Posts.ToList().Where(x=>x.UserId==userId);
+            return context.Posts.Include(x=>x.Category).ToList().Where(x=>x.UserId==userId);
         }
 
         public IEnumerable<Post> GetPostsOrderByRating()
         {
-            return context.Posts.Include(x=>x.Category).ToList().OrderByDescending(x => x.Rating);
+            return context.Posts.Where(x=>x.Published == true).Include(x=>x.Category).ToList().OrderByDescending(x => x.Rating).Take(5);
         }
 
         public Post FindPostByPostId (int postId)
         {
             return context.Posts.Find (postId);
+        }
+
+        public IEnumerable<Post> GetPostsById(int postId)
+        {
+            return context.Posts.Where(x=>x.Id==postId).Include(x=>x.User).Include(x=>x.Category).ToList();
         }
 
         public void CreatePost(Post post, string userId)
@@ -63,9 +68,24 @@ namespace ITNews.Data.Repositories.Repositories
             context.SaveChanges();
         }
 
-        public void UpdatePost(Post post)
+        public void UpdatePost(Post post, string userId)
         {
             context.Entry(post).State = EntityState.Modified;
-        }   
+            post.UserId = userId;
+        }
+
+        public IEnumerable<Post> SearchByTitle(string search)
+        {
+            var searchLow = search.ToLower();
+
+            return context.Posts.Where(x => x.Published == true && x.Title.ToLower().Contains(searchLow)).ToList();
+        }
+
+        public IEnumerable<Post> SearchByContent(string search)
+        {
+            var searchLow = search.ToLower();
+
+            return context.Posts.Where(x => x.Published == true && x.Content.ToLower().Contains(searchLow)).ToList();
+        }
     }
 }

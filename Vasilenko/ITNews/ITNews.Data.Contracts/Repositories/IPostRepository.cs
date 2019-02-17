@@ -10,7 +10,7 @@ namespace ITNews.Data.Contracts.Repositories
 
         IEnumerable<Post> GetPostsOrderByRating();
 
-        void UpdatePost (Post post);
+        void UpdatePost (Post post, string userId);
 
         void DeletePost(int postId);
 
@@ -23,5 +23,11 @@ namespace ITNews.Data.Contracts.Repositories
         int GetPostId(Post post);
 
         IEnumerable<Post> GetPublishedPosts();
+
+        IEnumerable<Post> GetPostsById(int postId);
+
+        IEnumerable<Post> SearchByTitle(string search);
+
+        IEnumerable<Post> SearchByContent(string search);
     }
 }

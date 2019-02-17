@@ -10,5 +10,7 @@ namespace ITNews.Domain.Contracts
         void AddTags(string tags, int postId);
 
         string FindTagsByPostId(int postId);
+
+        string GetTagNameById(int tagId);
     }
 }

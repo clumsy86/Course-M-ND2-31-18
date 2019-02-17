@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ITNews.Domain.Contracts;
 
 namespace ITNews.Web1.Areas.Identity.Pages.Account
 {
@@ -20,17 +21,20 @@ namespace ITNews.Web1.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IProfilService profileService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IProfilService profileService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            this.profileService = profileService;
         }
 
         [BindProperty]
@@ -84,6 +88,7 @@ namespace ITNews.Web1.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    profileService.CreateProfile(new Domain.Contracts.Entities.ProfileDomainModel { LastName = "Empty", FirstName = "Empty" },user.Id);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using AutoMapper;
 using ITNews.Domain.Contracts;
+using ITNews.Domain.Contracts.Entities;
+using ITNews.Web1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,16 +12,29 @@ namespace ITNews.Web1.Controllers
     {
         private readonly IMapper mapper;
         private readonly IUserService userService;
+        private readonly IProfilService profileService;
 
-        public ProfileController(IMapper mapper, IUserService userService)
+        public ProfileController(IMapper mapper, IUserService userService, IProfilService profileService)
         {
             this.mapper = mapper;
             this.userService = userService;
+            this.profileService = profileService;
         }
         // GET: Profile
         public ActionResult Index()
         {
-            return View();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var profile = profileService.FindProfile(userId);
+            var profileViewModel = mapper.Map<ProfileViewModel>(profile);
+            return View(profileViewModel);
+        }
+
+        [HttpPost]
+        public void Index(ProfileViewModel profile)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var profileDomainModel = mapper.Map<ProfileDomainModel>(profile);
+            profileService.EditProfile(profileDomainModel, userId);
         }
 
         // GET: Profile/Details/5

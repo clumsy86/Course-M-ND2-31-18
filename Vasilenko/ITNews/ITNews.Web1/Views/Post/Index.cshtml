@@ -26,24 +26,20 @@
                 <a href="javascript:SortTable(0,'T');">Title</a>
             </th>
 
-            @*<th>
-                <a href="javascript:SortTable(1,'T');">Short Discription</a>
-            </th>*@
-
             <th>
-                <a href="javascript:SortTable(2,'T');">Category</a>
+                <a href="javascript:SortTable(1,'T');">Category</a>
             </th>
 
             <th>
-                <a href="javascript:SortTable(3,'D','mdy');">Created</a>
+                <a href="javascript:SortTable(2,'D','mdy');">Created</a>
 
             </th>
 
-            <th><a href="javascript:SortTable(4,'D','mdy');">Updated</a> </th>
+            <th><a href="javascript:SortTable(3,'D','mdy');">Updated</a> </th>
 
-            <th><a href="javascript:SortTable(5,'N');">Published</a></th>
+            <th><a href="javascript:SortTable(4,'N');">Published</a></th>
 
-            <th><a href="javascript:SortTable(6,'N');">Rating</a></th>
+            <th><a href="javascript:SortTable(5,'N');">Rating</a></th>
 
         </tr>
     </thead>
@@ -51,20 +47,11 @@
         @foreach (var item in Model)
         {
             <tr>
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>*@
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.Content)
-                    </td>*@
-
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.ShortDiscription)
-                </td>*@
-
+               
                 <td>
                     @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
@@ -87,6 +74,7 @@
 
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { postId = item.Id }) |
+                    @Html.ActionLink("Details", "Details", "Main", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { postId = item.Id })
                 </td>
             </tr>

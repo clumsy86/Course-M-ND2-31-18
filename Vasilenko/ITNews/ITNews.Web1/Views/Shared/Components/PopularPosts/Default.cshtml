@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ITNews.Web1.Models.PostViewModel>
+
+@foreach (var item in Model)
+{
+    <div class="single-blog-content">
+        <div class="post-title align-self-center">
+            <h3><a href="/Main/Details/@item.Id" class="post-headline">@item.Title</a></h3>
+        </div>
+        <p>@item.ShortDiscription</p>
+        <div class="post-meta">
+            <p>By <span>@item.User.UserName</span> </p>
+            <span class="post-category"><strong>Category:</strong> @item.Category.Name</span>
+            <div class="post-date">
+                @item.Created
+            </div>
+            <div class="post-rating">
+                <span>Rating: @item.Rating</span>
+            </div>
+            <p>3 comments</p>
+        </div>
+        <a href="/Main/Details/@item.Id" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read more</a>
+    </div>
+}

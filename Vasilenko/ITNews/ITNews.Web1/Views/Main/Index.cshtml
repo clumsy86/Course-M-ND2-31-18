@@ -8,15 +8,23 @@
 <div class="container">
     <div class="row">
         <div class="col">           
-            <div class="row align-items-center">
-                <div class="col-12 col-md-8">
+            <div class="row align-items-center">                
+                <div class="col-12 col-md-3">
+                    <h2>Tags</h2>
+                    <br/>
+                    <div class="tags">
+                        @await Component.InvokeAsync("Tags")
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
                     <h2>New posts</h2>
+                    <br/>
                     <!-- Blog Content -->
                     @foreach (var item in Model)
                     {
                         <div class="single-blog-content">
                             <div class="post-title align-self-center">
-                                <h3><a href="@item.Id" class="post-headline">@item.Title</a></h3>
+                                <h3><a href="/Main/Details/@item.Id" class="post-headline">@item.Title</a></h3>
                             </div>
                             <p>@item.ShortDiscription</p>
                             <div class="post-meta">
@@ -30,19 +38,23 @@
                                 </div>
                                 <p>3 comments</p>
                             </div>
-                            <a href="@item.Id" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read more</a>
+                            <a href="/Main/Details/@item.Id" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read more</a>
                         </div>
                     }
                 </div>
+                <br/>
+                <div class="search-posts">
+                    @using (Html.BeginForm("Search", "Main", FormMethod.Post))
+                    {
+                        @Html.TextBox("search", "", new { placeholder = "Saerch..." })
+                    }
+                </div>
                 <h2>5 The most popular posts</h2>
-                <div class="col-12 col-md-4">
-
+                <div class="col-12 col-md-3">
                     <div class="popular-posts">
-                        @await Component.InvokeAsync("Tags")
+                        @await Component.InvokeAsync("PopularPosts")
                     </div>
                 </div>
-
-
             </div>       
             </div>
         </div>

@@ -34,7 +34,9 @@ namespace ITNews.Web1.Controllers
         // GET: Post
         public ActionResult Index()
         {
-            var posts = postService.GetPosts();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var posts = postService.GetPostsByUserId(userId);
 
             var postsViewModel = mapper.Map<List<PostViewModel>>(posts);
 
@@ -188,6 +190,7 @@ namespace ITNews.Web1.Controllers
             {
                 return View(); //EXCEPTION!!!! POST NOT FOUNDED 404
             }
+            
         }
 
         // POST: Post/Edit/5
@@ -203,14 +206,14 @@ namespace ITNews.Web1.Controllers
             {
                 var postDomainModel = mapper.Map<PostDomainModel>(post);
 
-                postService.UpdatePost(postDomainModel);
+                postService.UpdatePost(postDomainModel, userId);
 
                 if (post.Tag.Content != null)
                 {
                     tagService.AddTags(post.Tag.Content, post.Id);
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(PostController.Index));
             }
             else
             {
@@ -229,7 +232,7 @@ namespace ITNews.Web1.Controllers
         {
             postService.DeletePost(postId);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(PostController.Index));
         }
     }
 }

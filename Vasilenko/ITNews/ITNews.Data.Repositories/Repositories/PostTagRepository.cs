@@ -70,5 +70,10 @@ namespace ITNews.Data.Repositories.Repositories
         {
             context.SaveChanges();
         }
+
+        public IEnumerable<PostTag> PostsByTagId(int tagId)
+        {
+            return context.PostsTags.Where(x => x.TagId == tagId).ToList();
+        }
     }
 }

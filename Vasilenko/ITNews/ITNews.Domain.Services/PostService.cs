@@ -5,7 +5,8 @@ using ITNews.Domain.Contracts;
 using ITNews.Domain.Contracts.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.Web;
 
 namespace ITNews.Domain.Services
 {
@@ -85,12 +86,104 @@ namespace ITNews.Domain.Services
             return postDomainModel;
         }
 
-        public void UpdatePost(PostDomainModel post)
+        public void UpdatePost(PostDomainModel post, string userId)
         {
             var updatePost = mapper.Map<Post>(post);
-            postRepository.UpdatePost(updatePost);
+            postRepository.UpdatePost(updatePost, userId);
             updatePost.Updated = DateTime.Now;
             postRepository.Save();
+        }
+
+        public IEnumerable<PostDomainModel> GetPostsById(int postId)
+        {
+            var post = postRepository.GetPostsById(postId);
+            var postDomainModel = mapper.Map<List<PostDomainModel>>(post);
+            return postDomainModel;
+        }
+
+        public IEnumerable<PostDomainModel> GetPopularPosts()
+        {
+            var posts = postRepository.GetPostsOrderByRating();
+            var postsDomainModel = mapper.Map<List<PostDomainModel>>(posts);
+            return postsDomainModel;
+        }
+
+        public IEnumerable<SearchDomainModel> Search(string search)
+        {
+            Chilkat.HtmlToText h2t = new Chilkat.HtmlToText();
+            bool success = h2t.UnlockComponent("30-day trial");
+            if (success != true)
+            {
+                Debug.WriteLine(h2t.LastErrorText);
+                return null;
+            }
+
+            var postsTitle = postRepository.SearchByTitle(search);
+            var postsContent = postRepository.SearchByContent(search);
+            List<SearchDomainModel> result = new List<SearchDomainModel>();
+           
+
+            foreach (var item in postsTitle)
+            {
+                var content = h2t.ToText(item.Content);
+
+                if (content.Length < 80)
+                {
+                    result.Add(new SearchDomainModel
+                    {
+                        Id = item.Id,
+                        Content = content,
+                        Title = item.Title
+                    });
+                }
+                else
+                {
+                    result.Add(new SearchDomainModel
+                    {
+                        Id = item.Id,
+                        Content = content.Substring(1, 80),
+                        Title = item.Title
+                    });
+                }
+            }
+
+            foreach (var item in postsContent)
+            {
+                var content = h2t.ToText(item.Content);
+                var contentLow = content.ToLower();
+                var startSub = contentLow.IndexOf(search.ToLower());
+
+                if (content.Length < 80)
+                {
+                    result.Add(new SearchDomainModel
+                    {
+                        Id = item.Id,
+                        Content = content,
+                        Title = item.Title
+                    });
+                    continue;
+                }
+                if (content.Length-startSub >= 80)
+                {
+                    result.Add(new SearchDomainModel
+                    {
+                        Id = item.Id,
+                        Content = content.Substring(startSub, 80),
+                        Title = item.Title
+                    });
+                }
+                else
+                {
+                    result.Add(new SearchDomainModel
+                    {
+                        Id = item.Id,
+                        Content = content.Substring((startSub+search.Length)-80, 80),
+                        Title = item.Title
+                    });
+                }
+            }
+
+            return result;
         }
     }
 }

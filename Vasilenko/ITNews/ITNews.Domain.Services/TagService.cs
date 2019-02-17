@@ -112,7 +112,7 @@ namespace ITNews.Domain.Services
 
             string result = null;
 
-            if (tags != null)
+            if (tags.Count != 0)
             {
                 foreach (var item in tags)
                 {
@@ -127,6 +127,12 @@ namespace ITNews.Domain.Services
             }
 
             return result;
+        }
+
+        public string GetTagNameById(int tagId)
+        {
+            var tag = tagRepository.FindTagById(tagId);
+            return tag.Content;
         }
     }
 }

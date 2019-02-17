@@ -6,5 +6,7 @@ namespace ITNews.Domain.Contracts
     public interface IPostTagService
     {
         IEnumerable<PostTagDomainModel> GetPostsTags();
+
+        IEnumerable<PostTagDomainModel> GetPostsByTagId(int tagId);
     }
 }

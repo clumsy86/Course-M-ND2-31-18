@@ -23,5 +23,12 @@ namespace ITNews.Domain.Services
             var postsTagsDomainModel = mapper.Map<List<PostTagDomainModel>>(postsTags);
             return postsTagsDomainModel;
         }
+
+        public IEnumerable<PostTagDomainModel> GetPostsByTagId(int tagId)
+        {
+            var postsTags = postTagRepository.PostsByTagId(tagId);
+            var postsTagsDomainModel = mapper.Map<List<PostTagDomainModel>>(postsTags);
+            return postsTagsDomainModel;
+        }
     }
 }

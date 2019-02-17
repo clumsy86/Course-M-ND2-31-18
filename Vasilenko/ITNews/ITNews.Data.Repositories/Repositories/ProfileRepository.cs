@@ -1,35 +1,45 @@
 ﻿using ITNews.Data.Contracts.Entities;
 using ITNews.Data.Contracts.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace ITNews.Data.Repositories.Repositories
 {
     public class ProfileRepository : IProfileRepository, IDisposable
     {
-        public void CreateUser(ApplicationUser user)
+        private ApplicationDbContext context;
+
+        public ProfileRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            this.context = context;
+        }
+
+        public void CreateProfile(Profile profile, string userId)
+        {
+            context.Profiles.Attach(profile);
+            profile.UserId = userId;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            context.Dispose();
         }
 
-        public void EditUser(ApplicationUser user)
+        public Profile FindProfile(string userId)
         {
-            throw new NotImplementedException();
+            return context.Profiles.Where(x => x.UserId == userId).FirstOrDefault();
         }
 
-        public IEnumerable<ApplicationUser> GetUserById(string userId)
+        public void EditProfile(Profile profile, string userId)
         {
-            throw new NotImplementedException();
+            context.Entry(profile).State = EntityState.Modified;
+            profile.UserId = userId;
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            context.SaveChanges();
         }
     }
 }
