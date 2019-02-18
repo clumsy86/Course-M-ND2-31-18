@@ -5,52 +5,119 @@
 }
 
 <h2>Details</h2>
-
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 <div>
- 
+
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.HiddenFor(model => model.Id)
+            <input type="hidden" id="postId" value="@Model.Id" />
+            <input type="hidden" id="userId" value="@ViewBag.UserId" />
         </dt>
-        
-        
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+
         <dd>
             @Html.DisplayFor(model => model.Title)
         </dd>
-        
+
         <dd>
             @Html.Raw(Model.Content)
         </dd>
-        
+
         <dt>
             @Html.DisplayNameFor(model => model.Created)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Created)
         </dd>
-        
+
         <dt>
             @Html.DisplayNameFor(model => model.Rating)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Rating)
         </dd>
-        
+
+
         <dt>
-            @Html.DisplayNameFor(model => model.CategoryId)
+            @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CategoryId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
+            @Html.DisplayFor(model => model.User.UserName)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-6">
+            <input type="hidden" id="userName" value=@ViewBag.Username />
+            <textarea rows="4" cols="50" id="messageInput"></textarea>
+            <div>
+                <input type="submit" id="sendButton" value="Add" />
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <div class="comments">
+        @await Component.InvokeAsync("Comments", new { id = Model.Id })
+    </div>
+
+    <div id="target"></div>
+
+    <script id="hidden-template" type="text/x-custom-template">
+        <div class="container">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <section class="post-heading">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <a href="#" class="anchor-username"><h4 class="media-heading">@ViewBag.Username </h4></a>
+                                            <a href="#" class="anchor-time">@DateTime.Now.ToShortDateString()</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="post-body"> <p id="1">comment</p></section>
+                        <section class="post-footer">
+                            <hr>
+                            <div class="post-footer-option container">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-thumbs-up"></span> Like
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
 </div>
+    <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/test.js"></script>
+<br/>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>

@@ -24,19 +24,7 @@ namespace ITNews.Data.Repositories.Repositories
             var tag = context.Tags.Where(x => x.Id == tagId).FirstOrDefault();
             context.Tags.Remove(tag);
         }
-        //public bool IsExistTag (int tagId)
-        //{
-        //    var existTag = context.Tags.Where(x => x.Id == tagId);
-        //    if (existTag == null)
-        //    {
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        return true;
-        //    }
-        //}
-
+       
         public int FindTagByContent(string tagContent)
         {
             var existTag = context.Tags.Where(x=> x.Content == tagContent).FirstOrDefault();

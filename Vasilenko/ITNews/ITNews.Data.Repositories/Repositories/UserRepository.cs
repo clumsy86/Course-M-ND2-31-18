@@ -26,6 +26,12 @@ namespace ITNews.Data.Repositories.Repositories
             context.Dispose();
         }
 
+        public string FindUserName(string userId)
+        {
+            var user = context.Users.Where(x => x.Id == userId).FirstOrDefault();
+            return user.UserName;
+        }
+
         public void UpdateUser(ApplicationUser user)
         {
             context.Entry(user).State = EntityState.Modified;

@@ -46,9 +46,9 @@ namespace ITNews.Data.Repositories.Repositories
             return context.Posts.Find (postId);
         }
 
-        public IEnumerable<Post> GetPostsById(int postId)
+        public Post GetPostById(int postId)
         {
-            return context.Posts.Where(x=>x.Id==postId).Include(x=>x.User).Include(x=>x.Category).ToList();
+            return context.Posts.Where(x=>x.Id==postId).Include(x=>x.User).Include(x=>x.Category).FirstOrDefault();
         }
 
         public void CreatePost(Post post, string userId)

@@ -11,6 +11,7 @@ using AutoMapper;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 
+
 namespace ITNews.Web1
 {
     public class Startup
@@ -34,8 +35,6 @@ namespace ITNews.Web1
 
             services.AddDbContext(Configuration);
 
-            //services.AddMapper(Configuration);
-
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new DomainMapper());
@@ -49,6 +48,7 @@ namespace ITNews.Web1
 
             services.AddScoped<IEmailSender, EmailSender>();
 
+            services.AddSignalR();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                  .AddRazorPagesOptions(options =>
@@ -91,6 +91,11 @@ namespace ITNews.Web1
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<CommentHub>("/commentHub");
+            });
 
             app.UseMvc(routes =>
             {

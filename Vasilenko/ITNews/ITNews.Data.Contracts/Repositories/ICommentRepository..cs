@@ -9,5 +9,9 @@ namespace ITNews.Data.Contracts.Repositories
         IEnumerable<Comment> GetComments(int postId);
        
         void Save();
+
+        void CreateComment(Comment comment);
+
+        int GetCommentsCount(int postId);
     }
 }

@@ -19,7 +19,7 @@ namespace ITNews.Domain.Contracts
 
         IEnumerable<PostDomainModel> GetPublishedPosts();
 
-        IEnumerable<PostDomainModel> GetPostsById(int postId);
+        PostDomainModel GetPostById(int postId);
 
         IEnumerable<PostDomainModel> GetPopularPosts();
 

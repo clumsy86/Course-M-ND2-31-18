@@ -13,5 +13,7 @@ namespace ITNews.Data.Contracts.Repositories
         void DeleteUser(string userId);
 
         void Save();
+
+        string FindUserName(string userId);
     }
 }

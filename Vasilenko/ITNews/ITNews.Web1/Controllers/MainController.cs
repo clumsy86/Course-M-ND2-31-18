@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using AutoMapper;
 using ITNews.Domain.Contracts;
 using ITNews.Web1.Models;
@@ -12,23 +13,31 @@ namespace ITNews.Web1.Controllers
         private readonly IPostTagService postTagService;
         private readonly ICategoryService categoryService;
         private readonly ITagService tagService;
+        private readonly IUserService userService;
+        private readonly ICommentService commentService;
         private readonly IMapper mapper;
 
         public MainController(IPostService postService, IMapper mapper, ICategoryService categoryService,
-            ITagService tagService, IPostTagService postTagService)
+            ITagService tagService, IPostTagService postTagService, IUserService userService, ICommentService commentService)
         {
             this.postService = postService;
             this.mapper = mapper;
             this.categoryService = categoryService;
             this.tagService = tagService;
             this.postTagService = postTagService;
+            this.userService = userService;
+            this.commentService = commentService;
         }
 
         // GET: Main
         public ActionResult Index()
         {
             var posts = postService.GetPublishedPosts();
-            var postsViewModel = mapper.Map<List<PostViewModel>>(posts);
+            var postsViewModel = mapper.Map<List<MainPostViewModel>>(posts);
+            foreach (var item in postsViewModel)
+            {
+                item.CommentsCount=commentService.GetCommentsCount(item.Id);
+            }
             return View(postsViewModel);
         }
 
@@ -47,11 +56,21 @@ namespace ITNews.Web1.Controllers
             }
         }
 
-        // GET: Main/Details/5
+        [HttpGet]
         public ActionResult Details(int id)
         {
-            var post = postService.FindPost(id);
+            var post = postService.GetPostById(id);
             var postViewModel = mapper.Map<PostViewModel>(post);
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                ViewBag.UserId = userId;
+                ViewBag.Username = userService.FindUsername(userId);
+            }
+            catch
+            {
+                ViewBag.Username = null;
+            }
             return View(postViewModel);
         }
 
@@ -61,16 +80,18 @@ namespace ITNews.Web1.Controllers
 
             ViewBag.TagName = tagService.GetTagNameById(tagId);
 
-            List<PostViewModel> result = new List<PostViewModel>();
+            List<MainPostViewModel> result = new List<MainPostViewModel>();
 
             foreach (var item in postsTags)
             {
-                var posts = postService.GetPostsById(item.PostId);
-                var postsViewModel = mapper.Map<List<PostViewModel>>(posts);
-                foreach (var post in postsViewModel)
-                {
-                    result.Add(post);
-                }
+                var post = postService.GetPostById(item.PostId);
+                var postViewModel = mapper.Map<MainPostViewModel>(post);
+                result.Add(postViewModel);
+            }
+
+            foreach (var item in result)
+            {
+                item.CommentsCount = commentService.GetCommentsCount(item.Id);
             }
 
             return View(result);

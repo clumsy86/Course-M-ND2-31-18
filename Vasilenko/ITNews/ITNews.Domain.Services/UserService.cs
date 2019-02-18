@@ -24,6 +24,11 @@ namespace ITNews.Domain.Services
             userRepository.Save();
         }
 
+        public string FindUsername(string userId)
+        {
+            return userRepository.FindUserName(userId);
+        }
+
         public IEnumerable<UserDomainModel> GetUsers()
         {
             var users = userRepository.GetUsers();

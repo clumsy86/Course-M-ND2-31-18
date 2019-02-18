@@ -10,5 +10,7 @@ namespace ITNews.Domain.Contracts
         void UpdateUser(UserDomainModel user);
 
         void DeleteUser(string userId);
+
+        string FindUsername(string userId);
     }
 }

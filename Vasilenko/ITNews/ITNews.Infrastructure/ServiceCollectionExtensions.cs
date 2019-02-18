@@ -40,6 +40,9 @@ namespace ITNews.Infrastructure
             serviceCollection.AddTransient<IPostTagService, PostTagService>();
             serviceCollection.AddTransient<IProfileRepository, ProfileRepository>();
             serviceCollection.AddTransient<IProfilService, ProfileService>();
+            serviceCollection.AddTransient<ICommentRepository, CommentRepository>();
+            serviceCollection.AddTransient<ICommentService, CommentService>();
+
             return serviceCollection;
         }       
 

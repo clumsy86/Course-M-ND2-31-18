@@ -94,10 +94,10 @@ namespace ITNews.Domain.Services
             postRepository.Save();
         }
 
-        public IEnumerable<PostDomainModel> GetPostsById(int postId)
+        public PostDomainModel GetPostById(int postId)
         {
-            var post = postRepository.GetPostsById(postId);
-            var postDomainModel = mapper.Map<List<PostDomainModel>>(post);
+            var post = postRepository.GetPostById(postId);
+            var postDomainModel = mapper.Map<PostDomainModel>(post);
             return postDomainModel;
         }
 

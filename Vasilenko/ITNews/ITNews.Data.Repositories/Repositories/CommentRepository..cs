@@ -1,25 +1,43 @@
 ﻿using ITNews.Data.Contracts.Entities;
 using ITNews.Data.Contracts.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ITNews.Data.Repositories.Repositories
 {
     public class CommentRepository : ICommentRepository, IDisposable
     {
+        private ApplicationDbContext context;
+
+        public CommentRepository(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
         public void Dispose()
         {
-            throw new NotImplementedException();
+            context.Dispose();
         }
 
         public IEnumerable<Comment> GetComments(int postId)
         {
-            throw new NotImplementedException();
+            return context.Comments.Include(x=>x.User).Where(x => x.PostId == postId).ToList();
+        }
+
+        public int GetCommentsCount(int postId)
+        {
+            return context.Comments.Where(x => x.PostId == postId).Count();
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            context.SaveChanges();
+        }
+
+        public void CreateComment(Comment comment)
+        {
+            context.Comments.Add(comment);
         }
     }
 }

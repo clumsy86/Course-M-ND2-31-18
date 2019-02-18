@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ITNews.Web1.Models.CommentViewModel>
+
+@foreach (var item in Model)
+{
+    <div class="container">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <section class="post-heading">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <a href="#" class="anchor-username"><h4 class="media-heading">@item.User.UserName </h4></a>
+                                        <a href="#" class="anchor-time">@item.Created</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="post-body"> <p id="1">@item.Content</p></section>
+                    <section class="post-footer">
+                        <hr>
+                        <div class="post-footer-option container">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-thumbs-up"></span> Like
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+}

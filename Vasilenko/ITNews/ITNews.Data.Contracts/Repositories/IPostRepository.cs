@@ -24,7 +24,7 @@ namespace ITNews.Data.Contracts.Repositories
 
         IEnumerable<Post> GetPublishedPosts();
 
-        IEnumerable<Post> GetPostsById(int postId);
+        Post GetPostById(int postId);
 
         IEnumerable<Post> SearchByTitle(string search);
 

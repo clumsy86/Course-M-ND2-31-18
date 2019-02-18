@@ -81,6 +81,18 @@ namespace ITNews.Web1
 
             CreateMap<SearchViewModel, SearchDomainModel>().ReverseMap();
 
+            CreateMap<MainPostViewModel, PostDomainModel>().ReverseMap()
+                .ForMember(x => x.Id, c => c.MapFrom(d => d.Id)).ReverseMap()
+                .ForMember(x => x.Category, c => c.MapFrom(d => d.Category)).ReverseMap()
+                .ForMember(x => x.CategoryId, c => c.MapFrom(d => d.CategoryId)).ReverseMap()
+                .ForMember(x => x.Created, c => c.MapFrom(d => d.Created)).ReverseMap()
+                .ForMember(x => x.Rating, c => c.MapFrom(d => d.Rating)).ReverseMap()
+                .ForMember(x => x.ShortDiscription, c => c.MapFrom(d => d.ShortDiscription)).ReverseMap()
+                .ForMember(x => x.Title, c => c.MapFrom(d => d.Title)).ReverseMap()
+                .ForMember(x => x.User, c => c.MapFrom(d => d.User)).ReverseMap()
+                .ForMember(x => x.UserId, c => c.MapFrom(d => d.UserId)).ReverseMap()
+                .ForAllOtherMembers(c => c.Ignore());
+
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ITNews.Web1.Models.PostViewModel>
+﻿@model IEnumerable<ITNews.Web1.Models.MainPostViewModel>
 
 @{
     ViewData["Title"] = "TagLink";
@@ -27,7 +27,7 @@
                                 <div class="post-rating">
                                     <span>Rating: @item.Rating</span>
                                 </div>
-                                <p>3 comments</p>
+                                <p>@item.CommentsCount comments</p>
                             </div>
                             <a href="/Main/Details/@item.Id" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read more</a>
                         </div>
