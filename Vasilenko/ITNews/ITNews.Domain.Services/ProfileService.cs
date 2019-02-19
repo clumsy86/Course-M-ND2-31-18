@@ -24,10 +24,10 @@ namespace ITNews.Domain.Services
             profileRepository.Save();
         }
 
-        public void EditProfile(ProfileDomainModel profileDomainModel, string userId)
+        public void EditProfile(ProfileDomainModel profileDomainModel)
         {
             var profile = mapper.Map<Data.Contracts.Entities.Profile>(profileDomainModel);
-            profileRepository.EditProfile(profile, userId);
+            profileRepository.EditProfile(profile);
             profileRepository.Save();
         }
 
@@ -36,6 +36,36 @@ namespace ITNews.Domain.Services
             var profile = profileRepository.FindProfile(userId);
             var profileDomainModel = mapper.Map<ProfileDomainModel>(profile);
             return profileDomainModel;
+        }
+
+        public FullNameDomainModel FindFullName(string userId)
+        {
+            var profile = profileRepository.FindProfile(userId);
+            FullNameDomainModel fullName = new FullNameDomainModel();
+            fullName.FirstName = profile.FirstName;
+            fullName.LastName = profile.LastName;
+            return fullName;
+        }
+
+        public void SaveChangesFirstName(string userId, string firstname)
+        {
+            var profile = profileRepository.FindProfile(userId);
+            profile.FirstName = firstname;
+            profileRepository.Save();
+        }
+
+        public void SaveChangesLastName(string userId, string lastname)
+        {
+            var profile = profileRepository.FindProfile(userId);
+            profile.LastName = lastname;
+            profileRepository.Save();
+        }
+
+        public void SaveChangesCity(string userId, string city)
+        {
+            var profile = profileRepository.FindProfile(userId);
+            profile.City = city;
+            profileRepository.Save();
         }
     }
 }

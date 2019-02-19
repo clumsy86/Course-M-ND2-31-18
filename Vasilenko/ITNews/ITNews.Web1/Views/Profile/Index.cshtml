@@ -1,24 +1,18 @@
 ﻿@model ITNews.Web1.Models.ProfileViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Profile";
 }
 
 <h2>Index</h2>
-<head>
+<div>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    @*<link rel="stylesheet" href="~/css/site.css" />*@
-    @*<link rel="stylesheet" href="~/css/mdeditor.css" />*@
-    @*<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>*@
-    <link href="~/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet" />
-
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link href="~/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+    <script src="~/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
     <script src="~/js/editing.js"></script>
-
-
-</head>
+</div>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -29,21 +23,21 @@
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <a href="#" id="firstName" data-type="text" data-pk="@Model.Id"
-                   data-url="@Url.Action("Index", "Profile")"
+                   data-url="@Url.Action("ChangeFirstname", "Profile")"
                    data-title="Enter firstname">@Model.FirstName</a>
             </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
                 <a href="#" id="lastName" data-type="text" data-pk="@Model.Id"
-                   data-url="@Url.Action("Index", "Profile")"
+                   data-url="@Url.Action("ChangeLastname", "Profile")"
                    data-title="Enter lastname">@Model.LastName</a>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="City" class="control-label"></label>
                 <a href="#" id="city" data-type="text" data-pk="@Model.Id"
-                   data-url="@Url.Action("Index", "Profile")"
+                   data-url="@Url.Action("ChangeCity", "Profile")"
                    data-title="Enter city">@Model.City</a>
-            </div>
+            </div>*@
 
 
             @*
@@ -71,6 +65,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Main" asp-action="Index">Back to Main</a>
 </div>
 

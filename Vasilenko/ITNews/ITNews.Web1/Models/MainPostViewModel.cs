@@ -27,5 +27,7 @@ namespace ITNews.Web1.Models
         public CategoryViewModel Category { get; set; }
 
         public int CommentsCount { get; set; }
+
+        public FullNameViewModel FullName { get; set;}
     }
 }

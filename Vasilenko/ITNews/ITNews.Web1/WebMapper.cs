@@ -93,6 +93,7 @@ namespace ITNews.Web1
                 .ForMember(x => x.UserId, c => c.MapFrom(d => d.UserId)).ReverseMap()
                 .ForAllOtherMembers(c => c.Ignore());
 
+            CreateMap<FullNameDomainModel, FullNameViewModel>().ReverseMap();
         }
     }
 }

@@ -37,5 +37,7 @@ namespace ITNews.Web1.Models
         public CategoryViewModel Category { get; set; }
 
         public TagViewModel Tag { get; set; }
+
+        public FullNameViewModel FullName { get; set; }
     }
 }

@@ -34,9 +34,25 @@ namespace ITNews.Web1.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var profileDomainModel = mapper.Map<ProfileDomainModel>(profile);
-            profileService.EditProfile(profileDomainModel, userId);
         }
 
+        public void ChangeFirstname(string value)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            profileService.SaveChangesFirstName(userId, value);
+        }
+
+        public void ChangeLastname(string value)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            profileService.SaveChangesLastName(userId, value);
+        }
+
+        public void ChangeCity(string value)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            profileService.SaveChangesCity(userId, value);
+        }
         // GET: Profile/Details/5
         public ActionResult Details(int id)
         {

@@ -36,6 +36,13 @@ namespace ITNews.Domain.Services
             return usersDomainModel;
         }
 
+        public UserDomainModel FindUserById(string userId)
+        {
+            var user = userRepository.FindUser(userId);
+            var userDomainModel = mapper.Map<UserDomainModel>(user);
+            return userDomainModel;
+        }
+
         public void UpdateUser(UserDomainModel user)
         {
             var updateUser = mapper.Map<ApplicationUser>(user);

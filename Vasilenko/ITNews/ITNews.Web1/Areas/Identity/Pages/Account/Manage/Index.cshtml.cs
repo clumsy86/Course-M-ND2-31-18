@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using ITNews.Data.Contracts.Entities;
-using ITNews.Domain.Services;
+using ITNews.Domain.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +13,12 @@ namespace ITNews.Web1.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
-        private readonly IProfileService profileService;
+        private readonly IProfilService profileService;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender, IProfileService profileService)
+            IEmailSender emailSender, IProfilService profileService)
         {
             _userManager = userManager;
             _signInManager = signInManager;

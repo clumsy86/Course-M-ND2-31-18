@@ -11,16 +11,23 @@
                             <div class="col-md-9">
                                 <div class="media">
                                     <div class="media-body">
-                                        <a href="#" class="anchor-username"><h4 class="media-heading">@item.User.UserName </h4></a>
-                                        <a href="#" class="anchor-time">@item.Created</a>
+                                        @if (item.FullName.FirstName == "Empty" || item.FullName.LastName == "Empty" || item.FullName.LastName == null || item.FullName.FirstName == null)
+
+                                        {
+                                            <a href="#" class="anchor-username"><h6 class="media-heading">@item.User.UserName </h6></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" class="anchor-username"><h6 class="media-heading">@item.FullName.FirstName @item.FullName.LastName </h6></a>
+                                        }                                
+                                        <span>@item.Created.ToShortDateString()</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-                    <section class="post-body"> <p id="1">@item.Content</p></section>
+                    <section class="post-body"><br /> <p id="1">@item.Content</p></section>
                     <section class="post-footer">
-                        <hr>
                         <div class="post-footer-option container">
                             <ul class="list-unstyled">
                                 <li>

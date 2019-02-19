@@ -31,10 +31,9 @@ namespace ITNews.Data.Repositories.Repositories
             return context.Profiles.Where(x => x.UserId == userId).FirstOrDefault();
         }
 
-        public void EditProfile(Profile profile, string userId)
+        public void EditProfile(Profile profile)
         {
             context.Entry(profile).State = EntityState.Modified;
-            profile.UserId = userId;
         }
 
         public void Save()

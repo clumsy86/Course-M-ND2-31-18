@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.Title)</h2>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -27,18 +27,7 @@
         </dd>
 
         <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dd>
             @Html.Raw(Model.Content)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Created)
         </dd>
 
         <dt>
@@ -47,27 +36,39 @@
         <dd>
             @Html.DisplayFor(model => model.Rating)
         </dd>
-
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.UserName)
-        </dd>
     </dl>
+    <div class="row">
+        <div class=" col-md-2">
+
+        </div>
+        <div class="col-md-6">
+
+            @if (Model.FullName.FirstName == "Empty" || Model.FullName.LastName == "Empty" || Model.FullName.LastName == null || Model.FullName.FirstName == null)
+
+            {
+                <p><span><strong>Post created @Model.Created.ToShortDateString()</strong></span> </p> <p><span> <strong> By @Model.User.UserName</strong></span> </p>
+            }
+            else
+            {
+                <p><span><strong>Post created @Model.Created.ToShortDateString()</strong></span> </p> <p><span> <strong> By @Model.FullName.FirstName @Model.FullName.LastName </strong></span></p>
+            }
+        </div>
+    </div>
 </div>
+
+
 
 
 
 <div class="container">
     <div class="row">
-        <div class="col-md-2"></div>
+        <h3>Comments</h3>
+        <div class="col-md-2" style="padding-left:unset"><h5>Add your comment</h5></div>
         <div class="col-md-6">
             <input type="hidden" id="userName" value=@ViewBag.Username />
             <textarea rows="4" cols="50" id="messageInput"></textarea>
             <div>
-                <input type="submit" id="sendButton" value="Add" />
+                <input type="button" id="sendButton" value="Add" />
             </div>
         </div>
     </div>
@@ -89,16 +90,15 @@
                                 <div class="col-md-9">
                                     <div class="media">
                                         <div class="media-body">
-                                            <a href="#" class="anchor-username"><h4 class="media-heading">@ViewBag.Username </h4></a>
-                                            <a href="#" class="anchor-time">@DateTime.Now.ToShortDateString()</a>
+                                            <a href="#" class="anchor-username"><h6 class="media-heading">@ViewBag.Username </h6></a>
+                                            <span >@DateTime.Now.ToShortDateString()</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </section>
-                        <section class="post-body"> <p id="1">comment</p></section>
-                        <section class="post-footer">
-                            <hr>
+                        <section class="post-body"><br /> <p id="1">comment</p></section>
+                        <section class="post-footer" style="margin:unset">
                             <div class="post-footer-option container">
                                 <ul class="list-unstyled">
                                     <li>

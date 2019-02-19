@@ -17,5 +17,7 @@ namespace ITNews.Web1.Models
         public PostViewModel Post { get; set; }
 
         public UserViewModel User { get; set; }
+
+        public FullNameViewModel FullName { get; set; }
     }
 }

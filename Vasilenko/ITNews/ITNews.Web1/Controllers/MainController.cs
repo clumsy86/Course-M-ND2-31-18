@@ -15,10 +15,12 @@ namespace ITNews.Web1.Controllers
         private readonly ITagService tagService;
         private readonly IUserService userService;
         private readonly ICommentService commentService;
+        private readonly IProfilService profileService;
         private readonly IMapper mapper;
 
         public MainController(IPostService postService, IMapper mapper, ICategoryService categoryService,
-            ITagService tagService, IPostTagService postTagService, IUserService userService, ICommentService commentService)
+            ITagService tagService, IPostTagService postTagService, IUserService userService, ICommentService commentService,
+            IProfilService profileService)
         {
             this.postService = postService;
             this.mapper = mapper;
@@ -27,6 +29,7 @@ namespace ITNews.Web1.Controllers
             this.postTagService = postTagService;
             this.userService = userService;
             this.commentService = commentService;
+            this.profileService = profileService;
         }
 
         // GET: Main
@@ -36,6 +39,10 @@ namespace ITNews.Web1.Controllers
             var postsViewModel = mapper.Map<List<MainPostViewModel>>(posts);
             foreach (var item in postsViewModel)
             {
+                var fullname = profileService.FindFullName(item.UserId);
+
+                item.FullName = new FullNameViewModel{  FirstName = fullname.FirstName, LastName = fullname.LastName};
+
                 item.CommentsCount=commentService.GetCommentsCount(item.Id);
             }
             return View(postsViewModel);
@@ -61,11 +68,24 @@ namespace ITNews.Web1.Controllers
         {
             var post = postService.GetPostById(id);
             var postViewModel = mapper.Map<PostViewModel>(post);
+            var fullname = profileService.FindFullName(postViewModel.UserId);
+            postViewModel.FullName = new FullNameViewModel { FirstName = fullname.FirstName, LastName = fullname.LastName };
+
             try
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 ViewBag.UserId = userId;
-                ViewBag.Username = userService.FindUsername(userId);
+
+                var fullnameGuest = profileService.FindFullName(userId);
+
+                if (fullnameGuest != null || fullnameGuest.FirstName != "Empty" || fullnameGuest.LastName != "Empty")
+                {
+                    ViewBag.Username = fullnameGuest.FirstName+ " " + fullnameGuest.LastName;
+                }
+                else
+                {
+                    ViewBag.Username = userService.FindUsername(userId);
+                }
             }
             catch
             {
@@ -91,6 +111,8 @@ namespace ITNews.Web1.Controllers
 
             foreach (var item in result)
             {
+                var fullname = profileService.FindFullName(item.UserId);
+                item.FullName = new FullNameViewModel { FirstName = fullname.FirstName, LastName = fullname.LastName };
                 item.CommentsCount = commentService.GetCommentsCount(item.Id);
             }
 

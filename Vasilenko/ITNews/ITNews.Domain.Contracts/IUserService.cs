@@ -12,5 +12,7 @@ namespace ITNews.Domain.Contracts
         void DeleteUser(string userId);
 
         string FindUsername(string userId);
+
+        UserDomainModel FindUserById(string userId);
     }
 }

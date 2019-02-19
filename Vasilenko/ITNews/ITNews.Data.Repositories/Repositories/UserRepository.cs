@@ -21,6 +21,11 @@ namespace ITNews.Data.Repositories.Repositories
             context.Remove(userDeleted);
         }
 
+        public ApplicationUser FindUser(string userId)
+        {
+            return context.Users.Where(x => x.Id == userId).FirstOrDefault();
+        }
+
         public void Dispose()
         {
             context.Dispose();

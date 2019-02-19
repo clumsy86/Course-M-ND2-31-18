@@ -5,7 +5,7 @@ namespace ITNews.Data.Contracts.Repositories
 {
     public interface IProfileRepository: IDisposable
     {
-        void EditProfile (Profile profile, string userId);
+        void EditProfile (Profile profile);
 
         void CreateProfile(Profile profile, string userId);
 

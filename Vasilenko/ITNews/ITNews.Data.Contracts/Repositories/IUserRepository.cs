@@ -15,5 +15,7 @@ namespace ITNews.Data.Contracts.Repositories
         void Save();
 
         string FindUserName(string userId);
+
+        ApplicationUser FindUser(string userId);
     }
 }
