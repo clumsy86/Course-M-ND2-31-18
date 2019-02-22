@@ -2,7 +2,7 @@
 using ITNews.Data.Contracts.Repositories;
 using ITNews.Domain.Contracts;
 using ITNews.Domain.Contracts.Entities;
-
+using System.Collections.Generic;
 
 namespace ITNews.Domain.Services
 {
@@ -17,11 +17,24 @@ namespace ITNews.Domain.Services
             this.mapper = mapper;
         }
 
-        public void CreateProfile(ProfileDomainModel profileDomainModel, string userId)
+        public void CreateProfile(string userId)
         {
-            var profile = mapper.Map <Data.Contracts.Entities.Profile >(profileDomainModel);
+            var profile = new Data.Contracts.Entities.Profile();
             profileRepository.CreateProfile(profile, userId);
             profileRepository.Save();
+        }
+
+        public void DeleteProfile(string userId)
+        {
+            profileRepository.DeleteProfile(userId);
+            profileRepository.Save();
+        }
+
+        public List<ProfileDomainModel> GetProfiles()
+        {
+            var profiles = profileRepository.GetProfiles();
+            var profilesDomainModel = mapper.Map<List<ProfileDomainModel>>(profiles);
+            return profilesDomainModel;
         }
 
         public void EditProfile(ProfileDomainModel profileDomainModel)

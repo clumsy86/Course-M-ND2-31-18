@@ -1,67 +1,76 @@
 ﻿@page
 @using ITNews.Web1.Models
-@model ProfileViewModel
-@{
+@model ITNews.Web1.Models.ProfileViewModel
+
+@*@{
     ViewData["Title"] = "Profile";
+}*@
+@{ 
+    var profile = (ProfileViewModel)ViewData["profile"];
 }
-<head>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <link href="bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
-    <script src="bootstrap-editable/js/bootstrap-editable.js"></script>
-
+<h2>Index</h2>
+<div>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link href="~/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+    <script src="~/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
     <script src="~/js/editing.js"></script>
-</head>
-
+</div>
+<hr />
 <div class="row">
     <div class="col-md-4">
-        @*<form asp-action="Index">*@ @using (Html.BeginForm("Index", "Profile", FormMethod.Post))
-        {
+        <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-                <label asp-for="Id" class="control-label" hidden></label>
-                <input asp-for="Id" class="form-control"  hidden/>
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>*@
+
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <a href="#" id="firstName" data-type="text" data-pk="@profile.Id"
+                   data-url="@Url.Action("ChangeFirstname", "Profile")"
+                   data-title="Enter firstname">@profile.FirstName</a>
             </div>
-
-            <a href="#" id="firstName">Empty</a>
-
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
-                <span asp-validation-for="Country" class="text-danger"></span>
+                <a href="#" id="lastName" data-type="text" data-pk="@profile.Id"
+                   data-url="@Url.Action("ChangeLastname", "Profile")"
+                   data-title="Enter lastname">@profile.LastName</a>
             </div>
             @*<div class="form-group">
-                <label asp-for="Avatar" class="control-label"></label>
-                <input asp-for="Avatar" class="form-control" />
-                <span asp-validation-for="Avatar" class="text-danger"></span>
-            </div>*@
-            @*<div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        }
-        @*</form>*@
+                    <label asp-for="City" class="control-label"></label>
+                    <a href="#" id="city" data-type="text" data-pk="@Model.Id"
+                       data-url="@Url.Action("ChangeCity", "Profile")"
+                       data-title="Enter city">@Model.City</a>
+                </div>*@
+
+
+            @*
+
+                <div class="form-group">
+                    <label asp-for="Country" class="control-label"></label>
+                    <input asp-for="Country" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Avatar" class="control-label"></label>
+                    <input asp-for="Avatar" class="form-control" />
+                    <span asp-validation-for="Avatar" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserId" class="control-label"></label>
+                    <input asp-for="UserId" class="form-control" />
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>*@
+        </form>
     </div>
 </div>
+
+<div>
+    <a asp-controller="Main" asp-action="Index">Back to Main</a>
+</div>
+
+
+
 

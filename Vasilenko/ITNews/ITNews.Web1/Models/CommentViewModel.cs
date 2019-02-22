@@ -19,5 +19,9 @@ namespace ITNews.Web1.Models
         public UserViewModel User { get; set; }
 
         public FullNameViewModel FullName { get; set; }
+
+        public bool UserLike { get; set; }
+
+        public int Count { get; set; }
     }
 }

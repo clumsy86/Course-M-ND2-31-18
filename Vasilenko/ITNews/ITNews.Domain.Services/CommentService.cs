@@ -18,7 +18,7 @@ namespace ITNews.Domain.Services
             this.commentRepository = commentRepository;
             this.mapper = mapper;
         }
-        public void Create(string message, int postId, string userId)
+        public int Create(string message, int postId, string userId)
         {
             Comment comment = new Comment();
             comment.Content = message;
@@ -26,6 +26,13 @@ namespace ITNews.Domain.Services
             comment.PostId = postId;
             comment.UserId = userId;
             commentRepository.CreateComment(comment);
+            commentRepository.Save();
+            return commentRepository.GetCommentId(comment);
+        }
+
+        public void DeleteComments(string userId)
+        {
+            commentRepository.DeleteComments(userId);
             commentRepository.Save();
         }
 

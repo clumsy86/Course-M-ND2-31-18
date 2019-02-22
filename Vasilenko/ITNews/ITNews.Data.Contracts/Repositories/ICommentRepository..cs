@@ -13,5 +13,9 @@ namespace ITNews.Data.Contracts.Repositories
         void CreateComment(Comment comment);
 
         int GetCommentsCount(int postId);
+
+        int GetCommentId(Comment comment);
+
+        void DeleteComments(string userId);
     }
 }

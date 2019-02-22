@@ -11,19 +11,21 @@ namespace ITNews.Web1.Controllers
     {
         private readonly IUserService userService;
         private readonly IMapper mapper;
+        private readonly IProfilService profileService;
 
-        public AdminController(IUserService userService, IMapper mapper)
+        public AdminController(IUserService userService, IMapper mapper, IProfilService profileService)
         {
             this.userService = userService;
             this.mapper = mapper;
+            this.profileService = profileService;
         }
 
         // GET: Admin
         public ActionResult Index()
         {
-            var usersDomainModel =userService.GetUsers();
-            var usersViewModel = mapper.Map<List<UserViewModel>>(usersDomainModel);
-            return View(usersViewModel);
+            var profilesDomainModel = profileService.GetProfiles();
+            var profilesViewModel = mapper.Map<List<ProfileViewModel>>(profilesDomainModel);
+            return View(profilesViewModel);
         }
 
         // GET: Admin/Details/5
@@ -32,73 +34,23 @@ namespace ITNews.Web1.Controllers
             return View();
         }
 
-        // GET: Admin/Create
-        public ActionResult Create()
+     
+     
+        
+     
+        public ActionResult Delete(string userId)
         {
-            return View();
-        }
-
-        // POST: Admin/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            if (userId != null)
             {
-                // TODO: Add insert logic here
+                userService.DeleteUser(userId);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AdminController.Index));
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction(nameof(AdminController.Index));
             }
-        }
 
-        // GET: Admin/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Admin/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Admin/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Admin/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

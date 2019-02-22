@@ -58,6 +58,12 @@ namespace ITNews.Domain.Services
             
         }
 
+        public void DeletePosts (string userId)
+        {
+            postRepository.DeletePosts(userId);
+            postRepository.Save();
+        }
+
         public IEnumerable<PostDomainModel> GetPosts()
         {
             var posts = postRepository.GetPostsOrderByRating();

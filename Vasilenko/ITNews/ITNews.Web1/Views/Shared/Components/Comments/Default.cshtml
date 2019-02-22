@@ -1,8 +1,12 @@
 ﻿@model IEnumerable<ITNews.Web1.Models.CommentViewModel>
-
-@foreach (var item in Model)
-{
+<head>
+            
+    </head>
+@{int i = 1;
+    @foreach (var item in Model)
+    {
     <div class="container">
+        <input type="hidden" value="@item.Id" id="commentId @i" />
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -11,7 +15,7 @@
                             <div class="col-md-9">
                                 <div class="media">
                                     <div class="media-body">
-                                        @if (item.FullName.FirstName == "Empty" || item.FullName.LastName == "Empty" || item.FullName.LastName == null || item.FullName.FirstName == null)
+                                        @if (item.FullName.LastName == null || item.FullName.FirstName == null)
 
                                         {
                                             <a href="#" class="anchor-username"><h6 class="media-heading">@item.User.UserName </h6></a>
@@ -19,21 +23,30 @@
                                         else
                                         {
                                             <a href="#" class="anchor-username"><h6 class="media-heading">@item.FullName.FirstName @item.FullName.LastName </h6></a>
-                                        }                                
+                                        }
                                         <span>@item.Created.ToShortDateString()</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-                    <section class="post-body"><br /> <p id="1">@item.Content</p></section>
+                    <section class="post-body"><br /> <p id="content">@item.Content</p></section>
                     <section class="post-footer">
                         <div class="post-footer-option container">
                             <ul class="list-unstyled">
                                 <li>
-                                    <button type="button" class="btn btn-default btn-sm">
-                                        <span class="glyphicon glyphicon-thumbs-up"></span> Like
+                                    @if (item.UserLike == true)
+                                    {
+                                    <button type="button" id="@i" class="btn btn-info btn-sm">
+                                        <span class="glyphicon glyphicon-thumbs-up" id="count @i">@item.Count</span> 
                                     </button>
+                                    }
+                                    else
+                                    {
+                                    <button type="button" id="@i" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-thumbs-up" id="count @i">@item.Count</span>
+                                    </button>
+                                    }
                                 </li>
                             </ul>
                         </div>
@@ -42,4 +55,13 @@
             </div>
         </div>
     </div>
-}
+            i++;
+        }
+    }
+    <div>
+        @*<script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>*@
+        @*<script src="~/js/like.js"></script>*@
+    </div>
+    
+
+

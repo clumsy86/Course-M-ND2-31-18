@@ -2,6 +2,7 @@
 using ITNews.Data.Contracts.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ITNews.Data.Repositories.Repositories
@@ -39,6 +40,25 @@ namespace ITNews.Data.Repositories.Repositories
         public void Save()
         {
             context.SaveChanges();
+        }
+
+        public IEnumerable<Profile> GetProfiles()
+        {
+            return context.Profiles.Include(x => x.User).ToList();
+        }
+
+        public void DeleteProfile (string userId)
+        {
+            var profile = context.Profiles.Where(x => x.UserId == userId).FirstOrDefault();
+
+            if (profile != null)
+            {
+                context.Profiles.Remove(profile);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

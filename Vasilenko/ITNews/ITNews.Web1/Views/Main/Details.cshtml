@@ -6,9 +6,10 @@
 
 <h2>@Html.DisplayFor(model => model.Title)</h2>
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
+    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+    <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
+
 </head>
 <div>
 
@@ -43,7 +44,7 @@
         </div>
         <div class="col-md-6">
 
-            @if (Model.FullName.FirstName == "Empty" || Model.FullName.LastName == "Empty" || Model.FullName.LastName == null || Model.FullName.FirstName == null)
+            @if (Model.FullName.LastName == null || Model.FullName.FirstName == null)
 
             {
                 <p><span><strong>Post created @Model.Created.ToShortDateString()</strong></span> </p> <p><span> <strong> By @Model.User.UserName</strong></span> </p>
@@ -55,7 +56,6 @@
         </div>
     </div>
 </div>
-
 
 
 
@@ -75,7 +75,7 @@
     <br />
 
     <div class="comments">
-        @await Component.InvokeAsync("Comments", new { id = Model.Id })
+        @await Component.InvokeAsync("Comments", new { id = Model.Id, userId = ViewBag.UserId })
     </div>
 
     <div id="target"></div>
@@ -91,19 +91,20 @@
                                     <div class="media">
                                         <div class="media-body">
                                             <a href="#" class="anchor-username"><h6 class="media-heading">@ViewBag.Username </h6></a>
-                                            <span >@DateTime.Now.ToShortDateString()</span>
+                                            <span>@DateTime.Now.ToShortDateString()</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </section>
-                        <section class="post-body"><br /> <p id="1">comment</p></section>
+                        <section class="post-body"><br /> <p id="content">comment</p></section>
+                        <input type="hidden" id="commentId" value="1"/>
                         <section class="post-footer" style="margin:unset">
                             <div class="post-footer-option container">
                                 <ul class="list-unstyled">
                                     <li>
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <span class="glyphicon glyphicon-thumbs-up"></span> Like
+                                        <button type="button" id="buttonId" class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-thumbs-up" id="count">0</span> 
                                         </button>
                                     </li>
                                 </ul>
@@ -115,9 +116,12 @@
         </div>
     </script>
 </div>
-    <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
+<div>
     <script src="~/js/test.js"></script>
-<br/>
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
+    <script src="~/js/like.js"></script>
+
+</div>
+<br />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

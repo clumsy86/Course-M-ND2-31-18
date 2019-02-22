@@ -1,10 +1,11 @@
 ﻿using ITNews.Domain.Contracts.Entities;
+using System.Collections.Generic;
 
 namespace ITNews.Domain.Contracts
 {
     public interface IProfilService
     {
-        void CreateProfile(ProfileDomainModel profileDomainModel, string userId);
+        void CreateProfile(string userId);
 
         void EditProfile(ProfileDomainModel profileDomainModel);
 
@@ -17,5 +18,9 @@ namespace ITNews.Domain.Contracts
         void SaveChangesCity(string userId, string city);
 
         FullNameDomainModel FindFullName(string userId);
+
+        List<ProfileDomainModel> GetProfiles();
+
+        void DeleteProfile(string userId);
     }
 }

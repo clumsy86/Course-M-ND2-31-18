@@ -1,6 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using AutoMapper;
 using ITNews.Data.Contracts.Entities;
 using ITNews.Domain.Contracts;
+using ITNews.Web1.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +52,12 @@ namespace ITNews.Web1.Areas.Identity.Pages.Account.Manage
 
         public ActionResult OnGet()
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var profile = profileService.FindProfile(userId);
+            ViewData["profile"] = Mapper.Map<ProfileViewModel>(profile);
+             
+
+            //return View(profileViewModel);
             //var user = await _userManager.GetUserAsync(User);
             //if (user == null)
             //{
@@ -69,9 +78,9 @@ namespace ITNews.Web1.Areas.Identity.Pages.Account.Manage
 
             //IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
 
-            //return Page();
-            
-            return RedirectToAction("Edit", "Profile");
+            return Page();
+
+            //return RedirectToAction("Edit", "Profile");
 
         }
 

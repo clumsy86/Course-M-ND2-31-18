@@ -87,5 +87,18 @@ namespace ITNews.Data.Repositories.Repositories
 
             return context.Posts.Where(x => x.Published == true && x.Content.ToLower().Contains(searchLow)).ToList();
         }
+
+        public void DeletePosts(string userId)
+        {
+            var posts = context.Posts.Where(x => x.UserId == userId).ToList();
+
+            if (posts != null)
+            {
+                foreach (var item in posts)
+                {
+                    context.Posts.Remove(item);
+                }
+            }
+        }
     }
 }

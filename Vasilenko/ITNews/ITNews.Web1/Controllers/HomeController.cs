@@ -12,7 +12,8 @@ namespace ITNews.Web1.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            //во время перекура
+            return RedirectToAction("Index", "Main");
         }
 
         public IActionResult About()

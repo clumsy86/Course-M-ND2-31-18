@@ -1,5 +1,6 @@
 ﻿using ITNews.Data.Contracts.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace ITNews.Data.Contracts.Repositories
 {
@@ -12,5 +13,9 @@ namespace ITNews.Data.Contracts.Repositories
         void Save();
 
         Profile FindProfile(string userId);
+
+        IEnumerable<Profile> GetProfiles();
+
+        void DeleteProfile(string userId);
     }
 }

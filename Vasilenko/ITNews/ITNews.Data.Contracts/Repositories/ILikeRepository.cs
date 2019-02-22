@@ -6,8 +6,18 @@ namespace ITNews.Data.Contracts.Repositories
 {
     public interface ILikeRepository: IDisposable
     {
-        IEnumerable<Like> GetLikes(int postId, int commentId);
+        int GetLikes(int commentId);
+
+        void Like(Like like);
+
+        void UnLike(Like like);
+
+        bool IsExistLike(Like like);
+
+        bool UserLike(int commentId, string userId);
 
         void Save();
+
+        void DeleteLikes(string userId);
     }
 }

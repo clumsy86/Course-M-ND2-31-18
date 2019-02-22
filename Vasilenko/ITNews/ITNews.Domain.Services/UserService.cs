@@ -9,17 +9,30 @@ namespace ITNews.Domain.Services
 {
     public class UserService : IUserService
     {
+        private readonly IProfilService profileService;
+        private readonly ICommentService commentService;
+        private readonly IPostService postService;
+        private readonly ILikeService likeService;
         private IUserRepository userRepository;
         private IMapper mapper;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IMapper mapper, IProfilService profileService, 
+            ICommentService commentService, IPostService postService, ILikeService likeService)
         {
+            this.postService = postService;
+            this.profileService = profileService;
+            this.commentService = commentService;
+            this.likeService = likeService;
             this.userRepository = userRepository;
             this.mapper = mapper;
         }
 
         public void DeleteUser(string userId)
         {
+            likeService.DeleteLikes(userId);
+            commentService.DeleteComments(userId);
+            postService.DeletePosts(userId);
+            profileService.DeleteProfile(userId);
             userRepository.DeleteUser(userId);
             userRepository.Save();
         }

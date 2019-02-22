@@ -39,5 +39,28 @@ namespace ITNews.Data.Repositories.Repositories
         {
             context.Comments.Add(comment);
         }
+
+        public int GetCommentId(Comment comment)
+        {
+            context.Entry(comment).GetDatabaseValues();
+            return comment.Id;
+        }
+
+        public void DeleteComments(string userId)
+        {
+            var comments = context.Comments.Where(x => x.UserId == userId).ToList();
+
+            if (comments != null)
+            {
+                foreach (var item in comments)
+                {
+                    context.Comments.Remove(item);
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }

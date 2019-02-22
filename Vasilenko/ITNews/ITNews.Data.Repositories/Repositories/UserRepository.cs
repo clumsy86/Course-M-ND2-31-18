@@ -18,7 +18,16 @@ namespace ITNews.Data.Repositories.Repositories
         public void DeleteUser(string userId)
         {
             var userDeleted = context.Users.Find(userId);
-            context.Remove(userDeleted);
+
+            if (userDeleted != null)
+            {
+                context.Remove(userDeleted);
+            }
+            else
+            {
+                return;
+            }
+            
         }
 
         public ApplicationUser FindUser(string userId)

@@ -24,5 +24,7 @@ namespace ITNews.Domain.Contracts
         IEnumerable<PostDomainModel> GetPopularPosts();
 
         IEnumerable<SearchDomainModel> Search(string search);
+
+        void DeletePosts(string userId);
     }
 }

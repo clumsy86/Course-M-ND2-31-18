@@ -28,7 +28,7 @@
                             </div>
                             <p>@item.ShortDiscription</p>
                             <div class="post-meta">
-                                @if (item.FullName.FirstName == "Empty" || item.FullName.LastName == "Empty" || item.FullName.LastName == null || item.FullName.FirstName ==null)
+                                @if (string.IsNullOrEmpty(item.FullName.LastName) || string.IsNullOrEmpty(item.FullName.FirstName))
 
                                 {
                                     <p>By <span>@item.User.UserName</span> </p>
@@ -55,7 +55,7 @@
                 <div class="search-posts">
                     @using (Html.BeginForm("Search", "Main", FormMethod.Post))
                     {
-                        @Html.TextBox("search", "", new { placeholder = "Saerch..." })
+                        @Html.TextBox("search", "", new { placeholder = "Search..." })
                     }
                 </div>
                 <h2>5 The most popular posts</h2>

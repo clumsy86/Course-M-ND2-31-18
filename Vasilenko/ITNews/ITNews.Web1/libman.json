@@ -14,6 +14,15 @@
         "dist/browser/signalr.js",
         "dist/browser/signalr.min.js"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "@aspnet/signalr@1.0.4",
+      "destination": "wwwroot/lib/aspnet/signalr1.0.4/",
+      "files": [
+        "dist/browser/signalr.min.js",
+        "dist/browser/signalr.js"
+      ]
     }
   ]
 }

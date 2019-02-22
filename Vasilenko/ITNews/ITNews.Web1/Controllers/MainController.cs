@@ -78,7 +78,7 @@ namespace ITNews.Web1.Controllers
 
                 var fullnameGuest = profileService.FindFullName(userId);
 
-                if (fullnameGuest != null || fullnameGuest.FirstName != "Empty" || fullnameGuest.LastName != "Empty")
+                if (fullnameGuest != null)
                 {
                     ViewBag.Username = fullnameGuest.FirstName+ " " + fullnameGuest.LastName;
                 }

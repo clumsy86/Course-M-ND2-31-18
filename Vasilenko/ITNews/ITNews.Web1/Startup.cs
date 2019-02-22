@@ -48,7 +48,12 @@ namespace ITNews.Web1
 
             services.AddScoped<IEmailSender, EmailSender>();
 
-            services.AddSignalR();
+            //services.AddSignalR();
+
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                  .AddRazorPagesOptions(options =>

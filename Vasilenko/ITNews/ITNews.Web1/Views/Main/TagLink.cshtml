@@ -19,7 +19,7 @@
                             </div>
                             <p>@item.ShortDiscription</p>
                             <div class="post-meta">
-                                @if (item.FullName.FirstName == "Empty" || item.FullName.LastName == "Empty" || item.FullName.LastName == null || item.FullName.FirstName == null)
+                                @if (item.FullName.LastName == null || item.FullName.FirstName == null)
 
                                 {
                                     <p>By <span>@item.User.UserName</span> </p>
