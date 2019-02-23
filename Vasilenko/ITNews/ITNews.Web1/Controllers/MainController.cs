@@ -16,11 +16,12 @@ namespace ITNews.Web1.Controllers
         private readonly IUserService userService;
         private readonly ICommentService commentService;
         private readonly IProfilService profileService;
+        private readonly ILikeService likeService;
         private readonly IMapper mapper;
 
         public MainController(IPostService postService, IMapper mapper, ICategoryService categoryService,
             ITagService tagService, IPostTagService postTagService, IUserService userService, ICommentService commentService,
-            IProfilService profileService)
+            IProfilService profileService, ILikeService likeService)
         {
             this.postService = postService;
             this.mapper = mapper;
@@ -30,6 +31,7 @@ namespace ITNews.Web1.Controllers
             this.userService = userService;
             this.commentService = commentService;
             this.profileService = profileService;
+            this.likeService = likeService;
         }
 
         // GET: Main
@@ -41,9 +43,9 @@ namespace ITNews.Web1.Controllers
             {
                 var fullname = profileService.FindFullName(item.UserId);
 
-                item.FullName = new FullNameViewModel{  FirstName = fullname.FirstName, LastName = fullname.LastName};
+                item.FullName = new FullNameViewModel { FirstName = fullname.FirstName, LastName = fullname.LastName };
 
-                item.CommentsCount=commentService.GetCommentsCount(item.Id);
+                item.CommentsCount = commentService.GetCommentsCount(item.Id);
             }
             return View(postsViewModel);
         }
@@ -80,7 +82,7 @@ namespace ITNews.Web1.Controllers
 
                 if (fullnameGuest != null)
                 {
-                    ViewBag.Username = fullnameGuest.FirstName+ " " + fullnameGuest.LastName;
+                    ViewBag.Username = fullnameGuest.FirstName + " " + fullnameGuest.LastName;
                 }
                 else
                 {
@@ -117,6 +119,22 @@ namespace ITNews.Web1.Controllers
             }
 
             return View(result);
+        }
+
+        public ActionResult Like([FromQuery]int commentId)
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                bool isLiked = likeService.IsAddedLike(commentId, userId);
+                var likeAmount = likeService.GetCountLikes(commentId);
+                return Ok(new { isLiked, likeAmount });
+            }
+            catch
+            {
+
+                return Unauthorized();
+            }
         }
     }
 }

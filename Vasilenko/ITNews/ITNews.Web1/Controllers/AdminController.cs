@@ -28,16 +28,21 @@ namespace ITNews.Web1.Controllers
             return View(profilesViewModel);
         }
 
-        // GET: Admin/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public ActionResult Block(int profileId)
         {
-            return View();
+            var profile = profileService.FindProfileById(profileId);
+            var profileViewModel = mapper.Map<ProfileViewModel>(profile);
+            return View(profileViewModel);
         }
 
-     
-     
-        
-     
+        [HttpPost]
+        public void Block (ProfileViewModel profile)
+        {
+
+
+        }
+
         public ActionResult Delete(string userId)
         {
             if (userId != null)

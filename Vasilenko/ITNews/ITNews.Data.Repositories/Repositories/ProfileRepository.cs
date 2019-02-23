@@ -32,6 +32,11 @@ namespace ITNews.Data.Repositories.Repositories
             return context.Profiles.Where(x => x.UserId == userId).FirstOrDefault();
         }
 
+        public Profile FindProfileById(int profileId)
+        {
+            return context.Profiles.Include(x=>x.User).Where(x => x.Id == profileId).FirstOrDefault();
+        }
+
         public void EditProfile(Profile profile)
         {
             context.Entry(profile).State = EntityState.Modified;

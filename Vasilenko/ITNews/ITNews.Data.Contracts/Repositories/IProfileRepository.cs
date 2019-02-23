@@ -17,5 +17,7 @@ namespace ITNews.Data.Contracts.Repositories
         IEnumerable<Profile> GetProfiles();
 
         void DeleteProfile(string userId);
+
+        Profile FindProfileById(int profileId);
     }
 }

@@ -6,8 +6,6 @@
 
 <h2>@Html.DisplayFor(model => model.Title)</h2>
 <head>
-    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
-    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
     <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
 
 </head>
@@ -58,8 +56,6 @@
 </div>
 
 
-
-
 <div class="container">
     <div class="row">
         <h3>Comments</h3>
@@ -73,7 +69,19 @@
         </div>
     </div>
     <br />
+    <script>
+        const like = (commentId, e) => {
+            $.ajax({
+                url: '/main/like?commentId=' + commentId,
+                success: (data) => {
+                    var likeButton = data.isLiked ? "info" : "default";
+                    $(e.target.closest('.btn-sm')).attr('class', 'btn btn-' + likeButton + ' btn-sm');
+                    $(e.target.closest('.btn-sm').querySelector('span')).text(data.likeAmount)
+                }
+            });
 
+        }
+    </script>
     <div class="comments">
         @await Component.InvokeAsync("Comments", new { id = Model.Id, userId = ViewBag.UserId })
     </div>
@@ -98,13 +106,13 @@
                             </div>
                         </section>
                         <section class="post-body"><br /> <p id="content">comment</p></section>
-                        <input type="hidden" id="commentId" value="1"/>
+                        <input type="hidden" id="commentId" value="1" />
                         <section class="post-footer" style="margin:unset">
                             <div class="post-footer-option container">
                                 <ul class="list-unstyled">
                                     <li>
                                         <button type="button" id="buttonId" class="btn btn-default btn-sm">
-                                            <span class="glyphicon glyphicon-thumbs-up" id="count">0</span> 
+                                            <span class="glyphicon glyphicon-thumbs-up" id="count">0</span>
                                         </button>
                                     </li>
                                 </ul>
@@ -118,8 +126,6 @@
 </div>
 <div>
     <script src="~/js/test.js"></script>
-    <script src="~/js/like.js"></script>
-
 </div>
 <br />
 <div>

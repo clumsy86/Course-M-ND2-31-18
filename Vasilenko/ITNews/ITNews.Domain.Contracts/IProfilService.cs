@@ -22,5 +22,7 @@ namespace ITNews.Domain.Contracts
         List<ProfileDomainModel> GetProfiles();
 
         void DeleteProfile(string userId);
+
+        ProfileDomainModel FindProfileById(int profileId);
     }
 }

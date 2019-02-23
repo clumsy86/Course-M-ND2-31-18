@@ -20,9 +20,9 @@ namespace ITNews.Web1.Controllers
         private readonly ITagService tagService;
         private readonly IMapper mapper;
         private readonly IHostingEnvironment hostingEnvironment;
-      
 
-        public PostController(IPostService postService, IMapper mapper, ICategoryService categoryService, 
+
+        public PostController(IPostService postService, IMapper mapper, ICategoryService categoryService,
             ITagService tagService, IHostingEnvironment hostingEnvironment)
         {
             this.postService = postService;
@@ -109,13 +109,13 @@ namespace ITNews.Web1.Controllers
                 return View();
             }
         }
-        
+
         //catch
         //{
         //    return RedirectToPage("https://localhost:44318/Identity/Account/Login");
         //}
 
-            public class AutocompleteResultViewModel
+        public class AutocompleteResultViewModel
         {
             public int Id
             {
@@ -170,7 +170,7 @@ namespace ITNews.Web1.Controllers
 
                     if (tagContent != null)
                     {
-                        postViewModel.Tag = new TagViewModel { Content = tagContent};
+                        postViewModel.Tag = new TagViewModel { Content = tagContent };
                     }
 
                     var categories = categoryService.GetCategories();
@@ -190,7 +190,7 @@ namespace ITNews.Web1.Controllers
             {
                 return View(); //EXCEPTION!!!! POST NOT FOUNDED 404
             }
-            
+
         }
 
         // POST: Post/Edit/5
@@ -234,5 +234,7 @@ namespace ITNews.Web1.Controllers
 
             return RedirectToAction(nameof(PostController.Index));
         }
+
+        
     }
 }

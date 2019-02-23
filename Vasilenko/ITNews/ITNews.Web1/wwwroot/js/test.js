@@ -5,7 +5,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/commentHub").build
 //Disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
 
-connection.on("ReceiveMessage", function (message, hash, commentId) {
+connection.on("ReceiveMessage", function (message, commentId) {
     if (message != "") {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var username = document.getElementById("userName").value;
@@ -16,14 +16,7 @@ connection.on("ReceiveMessage", function (message, hash, commentId) {
             var template = $('#hidden-template').html();
             var item = $(template).clone();
             $(item).find('#content').html(msg);
-            var button = $(item).find('#buttonId');
-            button.attr('id', hash.toString());
-            var comment = $(item).find('#commentId');
-            var str = commentId.toString();
-            comment.val(str);
-            comment.attr('id', "commentId" + " " + hash.toString());
-            var count = $(item).find('#commentId');
-            count.attr('id', "count" + " " + hash.toString());
+            item.find('.btn-sm').on('click', (event) => like(commentId, event));
             $('#target').append(item);
             document.getElementById('messageInput').value = "";
         }

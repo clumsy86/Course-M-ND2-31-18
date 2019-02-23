@@ -37,6 +37,13 @@ namespace ITNews.Domain.Services
             return profilesDomainModel;
         }
 
+        public ProfileDomainModel FindProfileById(int profileId)
+        {
+            var profile = profileRepository.FindProfileById(profileId);
+            var profileDomainModel = mapper.Map<ProfileDomainModel>(profile);
+            return profileDomainModel;
+        }
+
         public void EditProfile(ProfileDomainModel profileDomainModel)
         {
             var profile = mapper.Map<Data.Contracts.Entities.Profile>(profileDomainModel);
