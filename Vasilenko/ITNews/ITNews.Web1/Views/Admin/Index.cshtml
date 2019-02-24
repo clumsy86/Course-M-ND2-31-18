@@ -6,6 +6,9 @@
 
 <br/>
 
+  
+
+
 <table class="table">
     <thead>
         <tr>
@@ -26,27 +29,29 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserName)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.UserName)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Blocked)
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Blocked)
+                </td>
 
-            <td>
-                @Html.ActionLink("Block", "Block", new { profileId=item.Id}) |
-                @Html.ActionLink("Delete", "Delete", new { userId = item.UserId} )
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.ActionLink("Block", "Block", new { profileId = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { userId = item.UserId })
+                </td>
+            </tr>
+            @Html.HiddenFor(modelItem => item.UserId)
+        }
     </tbody>
 </table>

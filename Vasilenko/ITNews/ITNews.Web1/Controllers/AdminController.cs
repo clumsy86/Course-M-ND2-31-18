@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ITNews.Domain.Contracts;
+using ITNews.Domain.Contracts.Entities;
 using ITNews.Web1.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -12,6 +12,7 @@ namespace ITNews.Web1.Controllers
         private readonly IUserService userService;
         private readonly IMapper mapper;
         private readonly IProfilService profileService;
+
 
         public AdminController(IUserService userService, IMapper mapper, IProfilService profileService)
         {
@@ -37,10 +38,10 @@ namespace ITNews.Web1.Controllers
         }
 
         [HttpPost]
-        public void Block (ProfileViewModel profile)
+        public ActionResult Block (ProfileViewModel profile)
         {
-
-
+            userService.Block(profile.UserId, profile.User.Blocked);
+            return RedirectToAction(nameof(AdminController.Index));
         }
 
         public ActionResult Delete(string userId)

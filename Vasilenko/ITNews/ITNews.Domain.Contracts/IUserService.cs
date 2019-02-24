@@ -1,6 +1,7 @@
 ﻿using ITNews.Domain.Contracts.Entities;
 using System.Collections.Generic;
 
+
 namespace ITNews.Domain.Contracts
 {
     public interface IUserService
@@ -14,5 +15,8 @@ namespace ITNews.Domain.Contracts
         string FindUsername(string userId);
 
         UserDomainModel FindUserById(string userId);
+
+        void Block(string userId, bool block);
+
     }
 }

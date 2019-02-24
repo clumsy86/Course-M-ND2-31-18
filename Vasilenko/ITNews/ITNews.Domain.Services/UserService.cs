@@ -3,6 +3,7 @@ using ITNews.Data.Contracts.Entities;
 using ITNews.Data.Contracts.Repositories;
 using ITNews.Domain.Contracts;
 using ITNews.Domain.Contracts.Entities;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
 namespace ITNews.Domain.Services
@@ -34,6 +35,12 @@ namespace ITNews.Domain.Services
             postService.DeletePosts(userId);
             profileService.DeleteProfile(userId);
             userRepository.DeleteUser(userId);
+            userRepository.Save();
+        }
+
+        public void Block(string userId, bool block)
+        {
+            userRepository.LockUser(userId, block);
             userRepository.Save();
         }
 

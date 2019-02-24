@@ -1,4 +1,5 @@
-﻿namespace ITNews.Web1.Models
+﻿
+namespace ITNews.Web1.Models
 {
     public class UserViewModel
     {
