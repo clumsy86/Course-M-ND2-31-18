@@ -12,11 +12,18 @@
 <div>
 
     <hr />
+
+
+
+
     <dl class="dl-horizontal">
         <dt>
             <input type="hidden" id="postId" value="@Model.Id" />
             <input type="hidden" id="userId" value="@ViewBag.UserId" />
         </dt>
+
+
+
 
         <dt>
             @Html.DisplayNameFor(model => model.Category)
@@ -27,13 +34,6 @@
 
         <dd>
             @Html.Raw(Model.Content)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Rating)
         </dd>
     </dl>
     <div class="row">
@@ -54,6 +54,58 @@
         </div>
     </div>
 </div>
+
+<div>
+    <script src="~/js/star-rating.js"></script>
+    <link href="~/css/star-rating.css" rel="stylesheet" />
+</div>
+
+
+<br />
+<div>
+    <div class="container">
+        <div class="raw">
+            <div class="col-md-2">
+                <div class="AmountRating">
+                    <span id="ratingAmount"> Amount rating: @Model.Rating</span>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="ratings">
+                    <input type="radio" name="star" class="rating" value="1" />
+                    <input type="radio" name="star" class="rating" value="2" />
+                    <input type="radio" name="star" class="rating" value="3" />
+                    <input type="radio" name="star" class="rating" value="4" />
+                    <input type="radio" name="star" class="rating" value="5" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $('.ratings').rating(function (vote, event) {
+        $.ajax({
+            url: '/main/rating',
+            data: { vote: vote, postId:@Model.Id },
+            success: function () {
+                document.getElementById("ratingAmount").innerHTML = "Amount rating:" + (parseInt(@Model.Rating)+parseInt(vote)).toString();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 403) {
+                    alert("You voted yet");
+                    $('.ratings').hide();
+                }
+                if (XMLHttpRequest.status == 401) {
+                    alert("You shoud be auth");
+                    $('.ratings').hide();
+                }
+
+            }
+        })
+    })
+
+</script>
 
 
 <div class="container">
@@ -124,6 +176,9 @@
         </div>
     </script>
 </div>
+
+
+
 <div>
     <script src="~/js/test.js"></script>
 </div>

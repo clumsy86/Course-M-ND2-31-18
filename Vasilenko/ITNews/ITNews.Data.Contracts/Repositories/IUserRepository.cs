@@ -19,5 +19,7 @@ namespace ITNews.Data.Contracts.Repositories
         ApplicationUser FindUser(string userId);
 
         void LockUser(string userId, bool block);
+
+        bool IsLocked(string userId);
     }
 }

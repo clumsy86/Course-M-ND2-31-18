@@ -31,5 +31,7 @@ namespace ITNews.Data.Contracts.Repositories
         IEnumerable<Post> SearchByContent(string search);
 
         void DeletePosts(string userId);
+
+        void EditPost(Post post);
     }
 }

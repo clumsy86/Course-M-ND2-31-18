@@ -70,14 +70,29 @@ namespace ITNews.Data.Repositories.Repositories
             var user = context.Users.Where(x => x.Id == userId).FirstOrDefault();
 
             if (block)
-            {                
-                user.LockoutEnd = DateTimeOffset.Now.AddDays(1);
-                user.Blocked = true;
+            {     
+                user.LockoutEnd = DateTimeOffset.Now.AddMinutes(1);
             }
             else
             {
                 user.LockoutEnd = null;
-                user.Blocked = false;
+            }
+        }
+        public bool IsLocked(string userId)
+        {
+            var user = context.Users.Where(x => x.Id == userId).FirstOrDefault();
+
+            if (user.LockoutEnd == null)
+            {
+                return false;
+            }
+            else
+            {
+                if (DateTimeOffset.Now >= user.LockoutEnd)
+                {
+                    user.LockoutEnd = null;
+                }
+                return true;
             }
         }
     }

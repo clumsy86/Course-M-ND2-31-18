@@ -17,11 +17,12 @@ namespace ITNews.Web1.Controllers
         private readonly ICommentService commentService;
         private readonly IProfilService profileService;
         private readonly ILikeService likeService;
+        private readonly IPostRatingService postRatingService;
         private readonly IMapper mapper;
 
         public MainController(IPostService postService, IMapper mapper, ICategoryService categoryService,
             ITagService tagService, IPostTagService postTagService, IUserService userService, ICommentService commentService,
-            IProfilService profileService, ILikeService likeService)
+            IProfilService profileService, ILikeService likeService, IPostRatingService postRatingService)
         {
             this.postService = postService;
             this.mapper = mapper;
@@ -32,6 +33,7 @@ namespace ITNews.Web1.Controllers
             this.commentService = commentService;
             this.profileService = profileService;
             this.likeService = likeService;
+            this.postRatingService = postRatingService;
         }
 
         // GET: Main
@@ -134,6 +136,32 @@ namespace ITNews.Web1.Controllers
             {
 
                 return Unauthorized();
+            }
+        }
+
+        public ActionResult Rating([FromQuery]int vote, [FromQuery]int postId)
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                var addedRating = postRatingService.IsAddedRating(userId, postId, vote);
+
+                if (addedRating)
+                {
+                    postService.AddRating(postId, vote);
+
+                    return Ok();
+                }
+                else
+                {
+                    return Forbid();
+                }                
+            }
+            catch
+            {
+
+                return  Unauthorized();
             }
         }
     }

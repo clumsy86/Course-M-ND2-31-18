@@ -26,5 +26,7 @@ namespace ITNews.Domain.Contracts
         IEnumerable<SearchDomainModel> Search(string search);
 
         void DeletePosts(string userId);
+
+        void AddRating(int postId, int mark);
     }
 }

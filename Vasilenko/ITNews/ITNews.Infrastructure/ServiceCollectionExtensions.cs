@@ -44,6 +44,8 @@ namespace ITNews.Infrastructure
             serviceCollection.AddTransient<ICommentService, CommentService>();
             serviceCollection.AddTransient<ILikeRepository, LikeRepository>();
             serviceCollection.AddTransient<ILikeService, LikeService>();
+            serviceCollection.AddTransient<IPostRatingRepository, PostRatingRepository>();
+            serviceCollection.AddTransient<IPostRatingService, PostRatingService>();
 
             return serviceCollection;
         }       

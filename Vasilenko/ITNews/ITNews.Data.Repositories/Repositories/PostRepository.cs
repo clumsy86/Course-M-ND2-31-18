@@ -100,5 +100,10 @@ namespace ITNews.Data.Repositories.Repositories
                 }
             }
         }
+
+        public void EditPost(Post post)
+        {
+            context.Entry(post).State = EntityState.Modified;
+        }
     }
 }

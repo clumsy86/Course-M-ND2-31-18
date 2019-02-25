@@ -9,12 +9,14 @@ namespace ITNews.Domain.Services
     public class ProfileService :IProfilService
     {
         private IProfileRepository profileRepository;
+        private readonly IUserRepository userRepository;
         private IMapper mapper;
 
-        public ProfileService(IProfileRepository profileRepository, IMapper mapper)
+        public ProfileService(IProfileRepository profileRepository, IMapper mapper, IUserRepository userRepository)
         {
             this.profileRepository = profileRepository;
             this.mapper = mapper;
+            this.userRepository = userRepository;
         }
 
         public void CreateProfile(string userId)
@@ -33,6 +35,12 @@ namespace ITNews.Domain.Services
         public List<ProfileDomainModel> GetProfiles()
         {
             var profiles = profileRepository.GetProfiles();
+            foreach (var item in profiles)
+
+            {
+                item.User.Blocked = userRepository.IsLocked(item.UserId);            
+            }
+            userRepository.Save();
             var profilesDomainModel = mapper.Map<List<ProfileDomainModel>>(profiles);
             return profilesDomainModel;
         }

@@ -191,5 +191,16 @@ namespace ITNews.Domain.Services
 
             return result;
         }
+
+        public void AddRating (int postId, int mark)
+        {
+            var post = postRepository.FindPostByPostId(postId);
+
+            post.Rating = post.Rating + mark;
+
+            postRepository.EditPost(post);
+
+            postRepository.Save();
+        }
     }
 }
