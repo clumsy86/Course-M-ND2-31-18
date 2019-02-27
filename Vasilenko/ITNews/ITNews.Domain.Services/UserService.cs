@@ -17,7 +17,7 @@ namespace ITNews.Domain.Services
         private IUserRepository userRepository;
         private IMapper mapper;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IProfilService profileService, 
+        public UserService(IUserRepository userRepository, IMapper mapper, IProfilService profileService,
             ICommentService commentService, IPostService postService, ILikeService likeService)
         {
             this.postService = postService;
@@ -69,5 +69,58 @@ namespace ITNews.Domain.Services
             userRepository.UpdateUser(updateUser);
             userRepository.Save();
         }
+
+        public void CreateRole(string name)
+        {
+            userRepository.CreateRole(name);
+            userRepository.Save();
+        }
+
+        public void AddRole(string userId, string nameRole)
+        {
+            var roleId = userRepository.FindRoleId(nameRole);
+            userRepository.AddUserRole(userId, roleId);
+            userRepository.Save();
+        }
+
+        public IEnumerable<RoleDomainModel> GetRoles()
+        {
+            var roles = userRepository.GetRoles();
+
+            var rolesDomainModel = mapper.Map<List<RoleDomainModel>>(roles);
+
+            return rolesDomainModel;
+
+        }
+
+        public RoleDomainModel FindRoleByUserId(string userId)
+        {
+            var roleId = userRepository.FindRoleIdByUserId(userId);
+
+            var role = userRepository.FindRoleById(roleId);
+
+            var roleDomainModel = mapper.Map<RoleDomainModel>(role);
+
+            return roleDomainModel;
+        }
+
+        public void AddUserRole(string userId, string roleId)
+        {
+            userRepository.AddUserRole(userId, roleId);
+
+            userRepository.Save();
+        }
+
+        public void ChangeUserRole(string userId, string roleId)
+        {
+            userRepository.DeleteUserRole(userId);
+
+            userRepository.Save();
+
+            userRepository.AddUserRole(userId, roleId);
+
+            userRepository.Save();
+        }
+
     }
 }

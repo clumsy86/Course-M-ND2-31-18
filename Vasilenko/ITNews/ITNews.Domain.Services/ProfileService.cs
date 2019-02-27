@@ -19,11 +19,13 @@ namespace ITNews.Domain.Services
             this.userRepository = userRepository;
         }
 
-        public void CreateProfile(string userId)
+        public int CreateProfile(string userId)
         {
             var profile = new Data.Contracts.Entities.Profile();
             profileRepository.CreateProfile(profile, userId);
             profileRepository.Save();
+            var profileId = profileRepository.GetProfileId(profile);
+            return profileId;
         }
 
         public void DeleteProfile(string userId)

@@ -1,13 +1,13 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
 using ITNews.Domain.Contracts;
-using ITNews.Domain.Contracts.Entities;
 using ITNews.Web1.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITNews.Web1.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly IMapper mapper;
@@ -27,13 +27,7 @@ namespace ITNews.Web1.Controllers
             var profile = profileService.FindProfile(userId);
             var profileViewModel = mapper.Map<ProfileViewModel>(profile);
             return View(profileViewModel);
-        }
-
-        [HttpPost]
-        public void Index(ProfileViewModel profile)
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var profileDomainModel = mapper.Map<ProfileDomainModel>(profile);
+         
         }
 
         public void ChangeFirstname(string value)
@@ -53,58 +47,30 @@ namespace ITNews.Web1.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             profileService.SaveChangesCity(userId, value);
         }
-        // GET: Profile/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
-     
-
-        // GET: Profile/Edit/5
-        public ActionResult Edit(int id)
+        [AllowAnonymous]
+        public ActionResult ReadProfile(int profileId)
         {
-            return View();
-        }
-
-        // POST: Profile/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
+            var profile = profileService.FindProfileById(profileId);
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                if (userId == profile.UserId)
+                {
+                    return RedirectToAction("Index", "Profile");
+                }
+                else
+                {
+                    var profileViewModel = mapper.Map<ProfileViewModel>(profile);
+                    return View(profileViewModel);
+                }
             }
             catch
             {
-                return View();
+                var profileViewModel = mapper.Map<ProfileViewModel>(profile);
+                return View(profileViewModel);
             }
+           
         }
-
-        // GET: Profile/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Profile/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-    }
+    } 
 }

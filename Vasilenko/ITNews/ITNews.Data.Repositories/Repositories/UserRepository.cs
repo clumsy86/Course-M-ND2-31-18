@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ITNews.Data.Repositories.Repositories
 {
@@ -94,6 +93,47 @@ namespace ITNews.Data.Repositories.Repositories
                 }
                 return true;
             }
+        }
+
+        public void CreateRole(string nameRole)
+        {
+            context.Roles.Add(new IdentityRole { Name = nameRole });
+        }
+
+        public string FindRoleId (string name)
+        {
+            var role = context.Roles.Where(x => x.Name == name).FirstOrDefault();
+
+            return role.Id;
+        }
+
+        public void AddUserRole(string userId, string roleId)
+        {
+            context.UserRoles.Add(new IdentityUserRole<string> { UserId = userId, RoleId = roleId });
+        }
+
+        public IEnumerable<IdentityRole> GetRoles()
+        {
+            return context.Roles.ToList();
+        }
+
+        public string FindRoleIdByUserId (string userId)
+        {
+            var userRole = context.UserRoles.Where(x => x.UserId == userId).FirstOrDefault();
+
+            return userRole.RoleId;
+        }
+
+        public IdentityRole FindRoleById(string roleId)
+        {
+            return context.Roles.Where(x => x.Id == roleId).FirstOrDefault();
+        }
+
+        public void DeleteUserRole(string userId)
+        {
+            var userRole = context.UserRoles.Where(x => x.UserId == userId).FirstOrDefault();
+
+            context.UserRoles.Remove(userRole);
         }
     }
 }

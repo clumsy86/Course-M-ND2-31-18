@@ -22,6 +22,12 @@ namespace ITNews.Data.Repositories.Repositories
             profile.UserId = userId;
         }
 
+        public int GetProfileId(Profile profile)
+        {
+            context.Entry(profile).GetDatabaseValues();
+            return profile.Id;
+        }
+
         public void Dispose()
         {
             context.Dispose();

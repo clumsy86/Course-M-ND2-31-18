@@ -5,7 +5,7 @@ namespace ITNews.Domain.Contracts
 {
     public interface IProfilService
     {
-        void CreateProfile(string userId);
+        int CreateProfile(string userId);
 
         void EditProfile(ProfileDomainModel profileDomainModel);
 

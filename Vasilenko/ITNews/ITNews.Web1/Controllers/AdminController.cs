@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
 using ITNews.Domain.Contracts;
-using ITNews.Domain.Contracts.Entities;
 using ITNews.Web1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace ITNews.Web1.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IUserService userService;
         private readonly IMapper mapper;
         private readonly IProfilService profileService;
-
 
         public AdminController(IUserService userService, IMapper mapper, IProfilService profileService)
         {
@@ -26,6 +26,11 @@ namespace ITNews.Web1.Controllers
         {
             var profilesDomainModel = profileService.GetProfiles();
             var profilesViewModel = mapper.Map<List<ProfileViewModel>>(profilesDomainModel);
+            foreach (var item in profilesViewModel)
+            {
+                var role = userService.FindRoleByUserId(item.UserId);
+                item.Role = new RoleViewModel { Id = role.Id, Name = role.Name };
+            }
             return View(profilesViewModel);
         }
 
@@ -58,5 +63,29 @@ namespace ITNews.Web1.Controllers
             }
 
         }
+
+        [HttpGet]
+        public ActionResult ChangeRole(int profileId, string roleName)
+        {
+            var profile = profileService.FindProfileById(profileId);
+            var profileViewModel = mapper.Map<ProfileViewModel>(profile);
+            profileViewModel.Role = new RoleViewModel {  Name = roleName};
+            var roles = userService.GetRoles();
+            var rolesViewModel = mapper.Map<List<RoleViewModel>>(roles);
+            profileViewModel.Roles = new List<RoleViewModel>();
+            foreach (var item in rolesViewModel)
+            {
+                profileViewModel.Roles.Add(item);
+            }
+            return View(profileViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult ChangeRole(ProfileViewModel profile)
+        {
+            userService.ChangeUserRole(profile.UserId, profile.Role.Id);
+            return RedirectToAction(nameof(AdminController.Index));
+        }
+
     }
 }

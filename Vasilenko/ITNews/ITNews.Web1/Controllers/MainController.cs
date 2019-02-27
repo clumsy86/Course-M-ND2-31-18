@@ -3,6 +3,7 @@ using System.Security.Claims;
 using AutoMapper;
 using ITNews.Domain.Contracts;
 using ITNews.Web1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITNews.Web1.Controllers
@@ -123,6 +124,8 @@ namespace ITNews.Web1.Controllers
             return View(result);
         }
 
+
+        [Authorize(Roles = "Admin, Reader, Writer")]
         public ActionResult Like([FromQuery]int commentId)
         {
             try
@@ -130,7 +133,7 @@ namespace ITNews.Web1.Controllers
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 bool isLiked = likeService.IsAddedLike(commentId, userId);
                 var likeAmount = likeService.GetCountLikes(commentId);
-                return Ok(new { isLiked, likeAmount });
+                return Ok (new { isLiked, likeAmount });
             }
             catch
             {
@@ -139,6 +142,7 @@ namespace ITNews.Web1.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin, Reader, Writer")]
         public ActionResult Rating([FromQuery]int vote, [FromQuery]int postId)
         {
             try

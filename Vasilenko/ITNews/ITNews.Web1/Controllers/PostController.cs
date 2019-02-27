@@ -6,6 +6,7 @@ using AutoMapper;
 using ITNews.Domain.Contracts;
 using ITNews.Domain.Contracts.Entities;
 using ITNews.Web1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ITNews.Web1.Controllers
 {
+    [Authorize(Roles = "Admin, Writer")]
     public class PostController : Controller
     {
         private readonly IPostService postService;

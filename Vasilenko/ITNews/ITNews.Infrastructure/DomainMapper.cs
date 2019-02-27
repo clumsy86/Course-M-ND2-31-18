@@ -1,5 +1,6 @@
 ﻿using ITNews.Data.Contracts.Entities;
 using ITNews.Domain.Contracts.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace ITNews.Infrastructure
 {
@@ -77,6 +78,12 @@ namespace ITNews.Infrastructure
                 .ForMember(x => x.EmailConfirmed, c => c.MapFrom(d => d.EmailConfirmed)).ReverseMap()
                 .ForMember(x => x.ProfileId, c => c.MapFrom(d => d.ProfileId)).ReverseMap()
                 .ForAllOtherMembers(c => c.Ignore());
+
+            CreateMap<IdentityRole, RoleDomainModel>().ReverseMap()
+                .ForMember(x => x.Id, c => c.MapFrom(d => d.Id)).ReverseMap()
+                .ForMember(x => x.Name, c => c.MapFrom(d => d.Name)).ReverseMap()
+                .ForAllOtherMembers(c => c.Ignore());
+               
             
         }
 

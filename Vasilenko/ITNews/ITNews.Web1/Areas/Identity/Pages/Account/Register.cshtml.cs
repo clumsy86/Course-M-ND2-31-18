@@ -22,19 +22,22 @@ namespace ITNews.Web1.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IProfilService profileService;
+        private readonly IUserService userService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IProfilService profileService)
+            IProfilService profileService,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             this.profileService = profileService;
+            this.userService = userService;
         }
 
         [BindProperty]
@@ -88,7 +91,9 @@ namespace ITNews.Web1.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    profileService.CreateProfile(user.Id);
+                    var profileId = profileService.CreateProfile(user.Id);
+                    user.ProfileId = profileId;
+                    userService.AddUserRole(user.Id, "7b7bb137-36a0-42fa-a59c-622e3e209d37");
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

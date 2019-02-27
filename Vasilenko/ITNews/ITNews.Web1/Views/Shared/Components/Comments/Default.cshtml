@@ -16,11 +16,11 @@
                                             @if (item.FullName.LastName == null || item.FullName.FirstName == null)
 
                                             {
-                                                <a href="#" class="anchor-username"><h6 class="media-heading">@item.User.UserName </h6></a>
+                                                <a href="@Url.Action("ReadProfile", "Profile", new {profileId = item.User.ProfileId})" class="anchor-username"><h6 class="media-heading">@item.User.UserName </h6></a>
                                             }
                                             else
                                             {
-                                                <a href="#" class="anchor-username"><h6 class="media-heading">@item.FullName.FirstName @item.FullName.LastName </h6></a>
+                                                <a href="@Url.Action("ReadProfile", "Profile", new {profileId = item.User.ProfileId})" class="anchor-username"><h6 class="media-heading">@item.FullName.FirstName @item.FullName.LastName </h6></a>
                                             }
                                             <span>@item.Created.ToShortDateString()</span>
                                         </div>
